@@ -8,17 +8,35 @@ function randomise(max) {
 
 const App = (props) => {
   const [selected, setSelected] = useState(0);
+  const [points, setPoints] = useState(
+    Array.apply(null, new Array(anecdotes.length)).map(
+      Number.prototype.valueOf,
+      0,
+    ),
+  );
 
-  const handleClick = () => {
+  const handleRandomise = () => {
     setSelected(randomise(anecdotes.length));
+  };
+
+  const handleVote = (props) => {
+    const copy = [...points];
+    copy[selected] += 1;
+    setPoints(copy);
   };
 
   return (
     <div className="container">
-      <p>{props.anecdotes[selected]}</p>
-      <button type="button" onClick={handleClick}>
-        Next Anecdote
-      </button>
+      <p className="anecdote">{props.anecdotes[selected]}</p>
+      <p>{points[selected]} vote(s)</p>
+      <div className="actions">
+        <button type="button" onClick={() => handleVote(selected)}>
+          Vote
+        </button>
+        <button type="button" onClick={handleRandomise}>
+          Next Anecdote
+        </button>
+      </div>
     </div>
   );
 };
