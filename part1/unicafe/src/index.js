@@ -13,10 +13,10 @@ const Button = ({ emoji, text, handleClick }) => {
 
 const Statistic = ({ text, value }) => {
   return (
-    <li>
-      <span className="label">{text}:</span>{' '}
-      <span className="label">{value}</span>
-    </li>
+    <tr>
+      <td>{text}:</td>
+      <td>{value}</td>
+    </tr>
   );
 };
 
@@ -28,18 +28,16 @@ const Statistics = ({ good, neutral, bad }) => {
   return (
     <div className="statistics">
       <h3>Statistics</h3>
-      <div className="stats-flex">
-        <ul>
+      <table>
+        <tbody>
           <Statistic text="Good" value={good} />
           <Statistic text="Neutral" value={neutral} />
           <Statistic text="Bad" value={bad} />
           <Statistic text="All" value={total} />
-        </ul>
-        <ul>
           <Statistic text="Average" value={average} />
-          <Statistic text="Positive" value={positive} />
-        </ul>
-      </div>
+          <Statistic text="Positive" value={`${positive}%`} />
+        </tbody>
+      </table>
     </div>
   );
 };
