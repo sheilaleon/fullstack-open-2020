@@ -2,9 +2,25 @@ import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-const Statistics = (props) => {
-  const { good, neutral, bad } = props;
+const Button = ({ emoji, text, handleClick }) => {
+  return (
+    <button type="button" onClick={handleClick}>
+      <div className="emoji">{emoji}</div>
+      {text}
+    </button>
+  );
+};
 
+const Statistic = ({ text, value }) => {
+  return (
+    <li>
+      <span className="label">{text}:</span>{' '}
+      <span className="label">{value}</span>
+    </li>
+  );
+};
+
+const Statistics = ({ good, neutral, bad }) => {
   let total = good + neutral + bad;
   let average = ((good * 1 + bad * -1) / total || 0).toFixed(1);
   let positive = ((good / total) * 100 || 0).toFixed(1);
@@ -14,29 +30,14 @@ const Statistics = (props) => {
       <h3>Statistics</h3>
       <div className="stats-flex">
         <ul>
-          <li>
-            <span className="label">Good:</span>{' '}
-            <span className="label">{good}</span>
-          </li>
-          <li>
-            <span className="label">Neutral:</span>{' '}
-            <span className="label">{neutral}</span>
-          </li>
-          <li>
-            <span className="label">Bad:</span>{' '}
-            <span className="label">{bad}</span>
-          </li>
-          <li>
-            <span className="label">All:</span>{' '}
-            <span className="label">{total}</span>
-          </li>
+          <Statistic text="Good" value={good} />
+          <Statistic text="Neutral" value={neutral} />
+          <Statistic text="Bad" value={bad} />
+          <Statistic text="All" value={total} />
         </ul>
         <ul>
-          <li>
-            <span className="label">Average:</span>{' '}
-            <span className="label">{average}</span>
-          </li>
-          <li>{positive}% Positive</li>
+          <Statistic text="Average" value={average} />
+          <Statistic text="Positive" value={positive} />
         </ul>
       </div>
     </div>
@@ -50,7 +51,7 @@ const App = () => {
   const [bad, setBad] = useState(0);
   const [showStats, setShowStats] = useState(false);
 
-  const handleClick = (props) => {
+  const castFeedback = (props) => {
     switch (props) {
       case 'Good':
         setGood(good + 1);
@@ -70,18 +71,27 @@ const App = () => {
     <div className="container">
       <h1>📣 Give Feedback</h1>
       <div className="feedback">
-        <button type="button" onClick={() => handleClick('Good')}>
-          <div className="emoji">🥰</div>
-          Good
-        </button>
-        <button type="button" onClick={() => handleClick('Neutral')}>
-          <div className="emoji">😐</div>
-          Neutral
-        </button>
-        <button type="button" onClick={() => handleClick('Bad')}>
-          <div className="emoji">🤢</div>
-          Bad
-        </button>
+        <Button
+          text="Good"
+          emoji="🥰"
+          handleClick={() => {
+            castFeedback('Good');
+          }}
+        />
+        <Button
+          text="Neutral"
+          emoji="😐"
+          handleClick={() => {
+            castFeedback('Neutral');
+          }}
+        />
+        <Button
+          text="Bad"
+          emoji="🤢"
+          handleClick={() => {
+            castFeedback('Bad');
+          }}
+        />
       </div>
       {showStats ? (
         <Statistics good={good} neutral={neutral} bad={bad} />
