@@ -1,0 +1,27 @@
+body {
+  margin: 0;
+  font-family: serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+  margin: 4rem auto;
+  width: 24rem;
+  text-align: center;
+}
+
+p {
+  font-size: 2rem;
+}
+
+p::before {
+  content: '“';
+}
+p::after {
+  content: '”';
+}
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
