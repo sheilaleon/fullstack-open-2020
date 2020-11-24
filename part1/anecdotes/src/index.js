@@ -27,6 +27,7 @@ const App = (props) => {
 
   return (
     <div className="container">
+      <h3>Anecdote of the Day</h3>
       <p className="anecdote">{props.anecdotes[selected]}</p>
       <p>{points[selected]} vote(s)</p>
       <div className="actions">
@@ -37,6 +38,12 @@ const App = (props) => {
           Next Anecdote
         </button>
       </div>
+      <br />
+      <br />
+      <h3>Anecdote with the most votes</h3>
+      <p className="anecdote">
+        {props.anecdotes[points.indexOf(Math.max(...points))]}
+      </p>
     </div>
   );
 };
