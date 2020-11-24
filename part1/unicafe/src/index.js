@@ -48,9 +48,9 @@ const App = () => {
   const [good, setGood] = useState(0);
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
+  const [showStats, setShowStats] = useState(false);
 
   const handleClick = (props) => {
-    console.log(props);
     switch (props) {
       case 'Good':
         setGood(good + 1);
@@ -63,6 +63,7 @@ const App = () => {
         break;
       default:
     }
+    setShowStats(true);
   };
 
   return (
@@ -82,7 +83,13 @@ const App = () => {
           Bad
         </button>
       </div>
-      <Statistics good={good} neutral={neutral} bad={bad} />
+      {showStats ? (
+        <Statistics good={good} neutral={neutral} bad={bad} />
+      ) : (
+        <p className="statistics">
+          <em>No feedback given</em>
+        </p>
+      )}
     </div>
   );
 };
