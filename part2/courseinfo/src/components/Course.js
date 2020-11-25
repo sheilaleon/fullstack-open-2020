@@ -7,7 +7,7 @@ const Header = ({ title }) => {
 const Part = ({ id, name, exercises }) => {
   return (
     <li key={id}>
-      {name} {exercises}
+      {name} <strong>{exercises}</strong>
     </li>
   );
 };
@@ -22,12 +22,24 @@ const Content = ({ parts }) => {
   );
 };
 
+const Footer = ({ parts }) => {
+  const total = parts.reduce(function (acc, obj) {
+    return acc + obj.exercises;
+  }, 0);
+  return (
+    <div>
+      Total of <strong>{total}</strong> exercises
+    </div>
+  );
+};
+
 const Course = ({ course }) => {
   const { id, name, parts } = course;
   return (
     <div key={id}>
       <Header title={name} />
       <Content parts={parts} />
+      <Footer parts={parts} />
     </div>
   );
 };
