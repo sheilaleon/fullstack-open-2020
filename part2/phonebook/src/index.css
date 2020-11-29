@@ -13,6 +13,22 @@ body {
   margin: 4rem auto;
 }
 
+.input-field {
+  display: flex;
+  flex-direction: column;
+  width: 16rem;
+}
+
+form {
+  margin-bottom: 3rem;
+}
+
+label {
+  margin-top: 1.25rem;
+  margin-bottom: 0.4rem;
+  font-weight: 700;
+}
+
 input {
   background: #fefefe;
   border: 1px solid #ccc;
@@ -28,6 +44,14 @@ button {
   color: #fff;
   border: none;
   border-radius: 0.25rem;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+ul li {
+  padding-bottom: 0.8rem;
 }
 
 code {
