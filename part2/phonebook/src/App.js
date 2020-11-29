@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 
 const App = () => {
+  function personExists(value, array) {
+    return array.some((e) => e.name === value);
+  }
+
   const [persons, setPersons] = useState([{ name: 'Arto Hellas', id: 1 }]);
   const [newName, setNewName] = useState('');
 
@@ -15,10 +19,14 @@ const App = () => {
       id: persons.length + 1,
     };
 
-    setPersons(persons.concat(personObject));
-    setNewName('');
+    // console.log(personExists(newName, persons));
+    if (personExists(newName, persons)) {
+      alert(`${newName} is already added to phonebook`);
+    } else {
+      setPersons(persons.concat(personObject));
+      setNewName('');
+    }
   };
-
   return (
     <div className="container">
       <h2>Phonebook</h2>
