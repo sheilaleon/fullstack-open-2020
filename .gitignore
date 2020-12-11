@@ -63,8 +63,7 @@ typings/
 .yarn-integrity
 
 # dotenv environment variables file
-.env
-.env.test
+.env*
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
@@ -89,3 +88,7 @@ typings/
 
 # Mac droppings
 .DS_Store
+
+# Visual studio code
+*.code-workspace
+*.vscode
