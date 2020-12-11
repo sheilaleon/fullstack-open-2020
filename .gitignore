@@ -89,3 +89,7 @@ typings/
 
 # Mac droppings
 .DS_Store
+
+# Visual studio code
+*.code-workspace
+*.vscode
