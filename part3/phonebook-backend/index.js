@@ -2,8 +2,13 @@ const { response } = require('express');
 const express = require('express');
 const app = express();
 
-// json-parser
+// Middleware
+const morgan = require('morgan');
+
 app.use(express.json());
+app.use(
+  morgan(':method :url :status :res[content-length] - :response-time ms'),
+);
 
 let persons = [
   {
