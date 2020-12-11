@@ -6,11 +6,6 @@
       "id": 1
     },
     {
-      "name": "Ada Lovelace",
-      "number": "39-44-5323523",
-      "id": 2
-    },
-    {
       "name": "Dan Abramov",
       "number": "12-43-234345",
       "id": 3
@@ -29,16 +24,6 @@
       "name": "Test User Two",
       "number": "0415456567",
       "id": 7
-    },
-    {
-      "name": "Test User Three",
-      "number": "3569349293",
-      "id": 8
-    },
-    {
-      "name": "Test User Four",
-      "number": "54785354657",
-      "id": 9
     }
   ]
 }

@@ -1,15 +1,18 @@
 import React from 'react';
 
-const Person = ({ name, number }) => {
+const Person = ({ name, number, id, handleDelete }) => {
   return (
     <li>
-      <strong>{name}:</strong> {number}
+      <strong>{name}:</strong> {number}{' '}
+      <button className="delete" onClick={() => handleDelete(id, name)}>
+        Delete
+      </button>
     </li>
   );
 };
 
 const Persons = (props) => {
-  const { persons, showAll, searchTerm } = props;
+  const { persons, showAll, searchTerm, handleDelete } = props;
   const personsToShow = showAll
     ? persons
     : persons.filter((person) =>
@@ -19,7 +22,13 @@ const Persons = (props) => {
   return (
     <ul>
       {personsToShow.map((person) => (
-        <Person key={person.name} name={person.name} number={person.number} />
+        <Person
+          key={person.id}
+          name={person.name}
+          id={person.id}
+          number={person.number}
+          handleDelete={handleDelete}
+        />
       ))}
     </ul>
   );

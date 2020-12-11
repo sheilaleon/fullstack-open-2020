@@ -36,6 +36,15 @@ const App = () => {
     setSearchTerm(event.target.value);
   };
 
+  const handleDelete = (id, name) => {
+    // event.preventDefault();
+    if (window.confirm(`Delete ${name}?`)) {
+      numbersService.remove(id).then(() => {
+        setPersons(persons.filter((person) => person.id !== id));
+      });
+    }
+  };
+
   const addPerson = (event) => {
     event.preventDefault();
     const personObject = {
@@ -69,7 +78,12 @@ const App = () => {
 
       <h3>Numbers</h3>
 
-      <Persons persons={persons} searchTerm={searchTerm} showAll={showAll} />
+      <Persons
+        persons={persons}
+        searchTerm={searchTerm}
+        showAll={showAll}
+        handleDelete={handleDelete}
+      />
     </div>
   );
 };

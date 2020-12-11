@@ -44,6 +44,15 @@ button {
   color: #fff;
   border: none;
   border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.delete {
+  background: #fff;
+  border: 1px #ccc solid;
+  color: #222;
+  font-size: 0.6rem;
+  padding: 0.3rem 0.4rem;
 }
 
 ul {
