@@ -82,6 +82,11 @@ app.post('/api/persons', (request, response) => {
       error: 'a number is required',
     });
   }
+  if (persons.find((person) => person.name === body.name)) {
+    return response.status(409).json({
+      error: 'name already exists',
+    });
+  }
 
   const person = {
     id: generateId(),
