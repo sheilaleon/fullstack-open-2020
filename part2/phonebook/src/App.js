@@ -1,14 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 
 import numbersService from './services/numbers';
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Persons from './components/Persons';
+import Notification from './components/Notification';
 
 const App = () => {
   function personExists(value, array) {
     return array.some((e) => e.name === value);
+  }
+
+  function displayNotification() {
+    setTimeout(() => {
+      setNotification(null);
+      setNotificationState(null);
+    }, 5000);
   }
 
   const [persons, setPersons] = useState([]);
@@ -16,6 +23,8 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [showAll, setShowAll] = useState(true);
+  const [notification, setNotification] = useState(null);
+  const [notificationState, setNotificationState] = useState(null);
 
   useEffect(() => {
     numbersService.getAll().then((response) => {
@@ -38,9 +47,20 @@ const App = () => {
 
   const handleDelete = (id, name) => {
     if (window.confirm(`Delete ${name}?`)) {
-      numbersService.remove(id).then(() => {
-        setPersons(persons.filter((person) => person.id !== id));
-      });
+      numbersService
+        .remove(id)
+        .then(() => {
+          setPersons(persons.filter((person) => person.id !== id));
+          setNotification(`${name} has been removed.`);
+          setNotificationState('success');
+          displayNotification();
+        })
+        .catch((error) => {
+          setNotification(`Information of ${name} has already been removed.`);
+          setNotificationState('error');
+          displayNotification();
+          setPersons(persons.filter((person) => person.id !== id));
+        });
     }
   };
 
@@ -68,11 +88,19 @@ const App = () => {
                 person.id !== updatePerson[0].id ? person : response.data,
               ),
             );
+            setNotification(
+              `${updatePerson[0].name}'s number has been updated.`,
+            );
+            setNotificationState('success');
+            displayNotification();
           });
       }
     } else {
       numbersService.create(personObject).then((response) => {
         setPersons(persons.concat(response.data));
+        setNotification(`Added ${response.data.name}.`);
+        setNotificationState('success');
+        displayNotification();
         setNewName('');
         setNewNumber('');
       });
@@ -82,6 +110,10 @@ const App = () => {
   return (
     <div className="container">
       <h2>Phonebook</h2>
+      <Notification
+        notification={notification}
+        notificationState={notificationState}
+      />
       <Filter searchTerm={searchTerm} handleChange={handleSearchChange} />
 
       <PersonForm

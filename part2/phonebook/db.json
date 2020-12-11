@@ -1,29 +1,24 @@
 {
   "persons": [
     {
+      "name": "Arto Hellas",
+      "number": "040-123456",
+      "id": 1
+    },
+    {
+      "name": "Ada Lovelace",
+      "number": "39-44-5323523",
+      "id": 2
+    },
+    {
       "name": "Dan Abramov",
-      "number": "2222222222",
+      "number": "12-43-234345",
       "id": 3
     },
     {
       "name": "Mary Poppendieck",
-      "number": "124532453456",
+      "number": "39-23-6423122",
       "id": 4
-    },
-    {
-      "name": "Test User One",
-      "number": "0413123234",
-      "id": 6
-    },
-    {
-      "name": "Test User Two",
-      "number": "0415456567",
-      "id": 7
-    },
-    {
-      "name": "Arto Hellas",
-      "number": "4444444",
-      "id": 8
     }
   ]
 }
