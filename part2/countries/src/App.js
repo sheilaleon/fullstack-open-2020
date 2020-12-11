@@ -24,10 +24,14 @@ const App = () => {
     setSearchTerm(e.target.value);
   };
 
+  const handleClick = (e) => {
+    setSearchTerm(e.target.dataset.countryName);
+  };
+
   return (
     <div className="container">
       <Filter searchTerm={searchTerm} handleChange={handleSearchChange} />
-      <Countries countries={countries} />
+      <Countries countries={countries} handleClick={handleClick} />
     </div>
   );
 };
