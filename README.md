@@ -17,3 +17,11 @@ Course completion: ⏳ In Progress...
 - [1.1-1.5: courseinfo](./part1/courseinfo)
 - [1.6-1.11\*: unicafe](./part1/unicafe)
 - [1.12\*-1.14\*: anecdotes](./part1/anecdotes)
+
+### Part 2: [Communicating with Server](https://fullstackopen.com/en/part2)
+
+🔍 [View Exercise Solutions 2.1-2.20](./part2)
+
+- [Course Info v2](./part2/courseinfo)
+- [Phonebook](./part2/phonebook)
+- [Countries](./part2/countries)
