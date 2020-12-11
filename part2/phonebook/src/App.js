@@ -37,7 +37,6 @@ const App = () => {
   };
 
   const handleDelete = (id, name) => {
-    // event.preventDefault();
     if (window.confirm(`Delete ${name}?`)) {
       numbersService.remove(id).then(() => {
         setPersons(persons.filter((person) => person.id !== id));
@@ -53,7 +52,24 @@ const App = () => {
     };
 
     if (personExists(newName, persons)) {
-      alert(`${newName} is already added to phonebook`);
+      if (
+        window.confirm(
+          `${newName} is already added to phonebook, replace the old number with a new one?`,
+        )
+      ) {
+        const updatePerson = persons.filter(
+          (person) => person.name === newName,
+        );
+        numbersService
+          .update(updatePerson[0].id, personObject)
+          .then((response) => {
+            setPersons(
+              persons.map((person) =>
+                person.id !== updatePerson[0].id ? person : response.data,
+              ),
+            );
+          });
+      }
     } else {
       numbersService.create(personObject).then((response) => {
         setPersons(persons.concat(response.data));

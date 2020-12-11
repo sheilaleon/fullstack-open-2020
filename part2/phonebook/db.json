@@ -1,18 +1,13 @@
 {
   "persons": [
     {
-      "name": "Arto Hellas",
-      "number": "040-123456",
-      "id": 1
-    },
-    {
       "name": "Dan Abramov",
-      "number": "12-43-234345",
+      "number": "2222222222",
       "id": 3
     },
     {
       "name": "Mary Poppendieck",
-      "number": "39-23-6423122",
+      "number": "124532453456",
       "id": 4
     },
     {
@@ -24,6 +19,11 @@
       "name": "Test User Two",
       "number": "0415456567",
       "id": 7
+    },
+    {
+      "name": "Arto Hellas",
+      "number": "4444444",
+      "id": 8
     }
   ]
 }
