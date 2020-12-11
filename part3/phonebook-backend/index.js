@@ -1,5 +1,9 @@
+const { response } = require('express');
 const express = require('express');
 const app = express();
+
+// json-parser
+app.use(express.json());
 
 let persons = [
   {
@@ -34,6 +38,11 @@ let persons = [
   },
 ];
 
+const generateId = () => {
+  const id = Math.floor(Math.random() * Math.floor(100000));
+  return id;
+};
+
 app.get('/', (request, response) => {
   response.send('<h1>Hello 🌎</h1>');
 });
@@ -58,6 +67,31 @@ app.delete('/api/persons/:id', (request, response) => {
   persons = persons.filter((person) => person.id !== id);
 
   response.status(204).end();
+});
+
+app.post('/api/persons', (request, response) => {
+  const body = request.body;
+
+  if (!body.name) {
+    return response.status(400).json({
+      error: 'name is required',
+    });
+  }
+  if (!body.number) {
+    return response.status(400).json({
+      error: 'a number is required',
+    });
+  }
+
+  const person = {
+    id: generateId(),
+    name: body.name,
+    number: body.number,
+  };
+
+  persons = persons.concat(person);
+
+  response.json(person);
 });
 
 app.get('/info', (request, response) => {
