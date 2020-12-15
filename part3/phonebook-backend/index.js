@@ -8,6 +8,7 @@ const cors = require('cors');
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static('build'));
 
 morgan.token('body', (req) => {
   const body = JSON.stringify(req.body);
@@ -58,10 +59,6 @@ const generateId = () => {
   const id = Math.floor(Math.random() * Math.floor(100000));
   return id;
 };
-
-app.get('/', (request, response) => {
-  response.send('<h1>Hello 🌎</h1>');
-});
 
 app.get('/api/persons', (request, response) => {
   response.json(persons);
