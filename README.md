@@ -25,3 +25,10 @@ Course completion: ⏳ In Progress...
 - [Course Info v2](./part2/courseinfo)
 - [Phonebook](./part2/phonebook)
 - [Countries](./part2/countries)
+
+### Part 3: [Programming a server with NodeJS and Express](https://fullstackopen.com/en/part3)
+
+🔍 [View Exercise Solutions 3.1-3.22](./part3)
+
+- [Phonebook Backend](./part3/phonebook-backend)
+- 
