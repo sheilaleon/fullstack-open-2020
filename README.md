@@ -31,4 +31,3 @@ Course completion: ⏳ In Progress...
 🔍 [View Exercise Solutions 3.1-3.22](./part3)
 
 - [Phonebook Backend](./part3/phonebook-backend)
-- 
