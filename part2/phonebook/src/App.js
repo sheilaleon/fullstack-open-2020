@@ -96,14 +96,21 @@ const App = () => {
           });
       }
     } else {
-      numbersService.create(personObject).then((response) => {
-        setPersons(persons.concat(response.data));
-        setNotification(`Added ${response.data.name}.`);
-        setNotificationState('success');
-        displayNotification();
-        setNewName('');
-        setNewNumber('');
-      });
+      numbersService
+        .create(personObject)
+        .then((response) => {
+          setPersons(persons.concat(response.data));
+          setNotification(`Added ${response.data.name}.`);
+          setNotificationState('success');
+          displayNotification();
+          setNewName('');
+          setNewNumber('');
+        })
+        .catch((error) => {
+          setNotification(`${error.response.data.error}`);
+          setNotificationState('error');
+          displayNotification();
+        });
     }
   };
 
