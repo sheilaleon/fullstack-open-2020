@@ -1,3 +1,5 @@
+const Blog = require('../models/blog')
+
 const initialBlogs = [
   {
     'title': 'Understanding Modules, Import and Export in JavaScript',
@@ -12,6 +14,11 @@ const initialBlogs = [
     'likes': 1,
   }
 ]
+
+const blogsInDb = async () => {
+  const blogs = await Blog.find({})
+  return blogs.map((blog) => blog.toJSON)
+}
 
 const newBlog = {
   'title': 'Jest Test Blog Post Title',
@@ -32,5 +39,5 @@ const blogMissingContent = {
 }
 
 module.exports = {
-  initialBlogs, newBlog, blogMissingLikes, blogMissingContent
+  initialBlogs, blogsInDb, newBlog, blogMissingLikes, blogMissingContent
 }

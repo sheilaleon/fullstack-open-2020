@@ -1,6 +1,7 @@
 const mongooose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
+const blogsRouter = require('../controllers/blogs')
 const api = supertest(app)
 const Blog = require('../models/blog')
 const helper = require('./test_helper')
@@ -63,6 +64,21 @@ describe('blogs api', () => {
 
     const response = await api.get('/api/blogs')
     expect(response.body).toHaveLength(helper.initialBlogs.length)
+  })
+
+  test('deletion of blog post', async () => {
+    const response = await api.get('/api/blogs')
+    const contents = response.body.map(r => r.id)
+    const blogToDelete = contents[0]
+    await api
+      .delete(`/api/blogs/${blogToDelete}`)
+      .expect(204)
+    const blogsAtEndResponse = await api.get('/api/blogs')
+    const blogsAtEnd = blogsAtEndResponse.body.map(r => r.id)
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1)
+
+    const newContent = blogsAtEnd.map(r => r.id)
+    expect(newContent).not.toBe(blogToDelete)
   })
 
   afterAll(() => {
