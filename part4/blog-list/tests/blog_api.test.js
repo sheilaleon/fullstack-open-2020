@@ -81,6 +81,21 @@ describe('blogs api', () => {
     expect(newContent).not.toBe(blogToDelete)
   })
 
+  test('updates likes of a blog', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToUpdate = blogsAtStart[0]
+
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send({ likes: 3 })
+      .expect(200)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    const updatedBlog = blogsAtEnd[0]
+
+    expect(updatedBlog.likes).toBe(3)
+  })
+
   afterAll(() => {
     mongooose.connection.close()
   })
