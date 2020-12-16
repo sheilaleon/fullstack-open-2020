@@ -114,10 +114,32 @@ describe('Most Blogs', () => {
 
   test('when list has multiple blog equals the author of highest blog count', () => {
     const result = listHelper.mostBlogs(blogs)
-    console.log(result)
-    // expect(result).toEqual({
-    //   'author': 'Tania Rascia',
-    //   'blogs': 3,
-    // })
+    expect(result).toEqual({
+      'author': 'Tania Rascia',
+      'blogs': 3,
+    })
+  })
+})
+
+describe('most likes', () => {
+  test('when list has no blogs', () => {
+    const result = listHelper.mostLikes(emptyList)
+    expect(result).toBe(null)
+  })
+
+  test('when list has only one blog equals the author likes of that', () => {
+    const result = listHelper.mostLikes(listWithOnlyOneBlog)
+    expect(result).toEqual({
+      'author': 'Tania Rascia',
+      'likes': 12
+    })
+  })
+
+  test('when list has multiple blog equals the author of highest likes', () => {
+    const result = listHelper.mostLikes(blogs)
+    expect(result).toEqual({
+      'author': 'Tania Rascia',
+      'likes': 5
+    })
   })
 })

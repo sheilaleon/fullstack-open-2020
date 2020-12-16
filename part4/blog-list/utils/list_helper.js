@@ -53,9 +53,40 @@ const mostBlogs = (blogs) => {
   return popularAuthor
 }
 
+const mostLikes = (blogs) => {
+  const authors = blogs.map((blog) => blog.author)
+
+  if (!authors || authors.length === 0) {
+    return null
+  }
+
+  // remove dups and create array of Authors
+  // const uniqueAuthors = new Set(authors)
+  // const authorsArray = [...uniqueAuthors]
+  let uniqueAuthors = [...new Set(authors)]
+
+  const authorLikes = uniqueAuthors.map((author) => {
+    const authorBlogs = blogs.filter((blog) => blog.author === author)
+
+    const calculateAuthorLikes = authorBlogs.reduce((accumulator, currentValue) =>
+      accumulator + currentValue.likes, 0,
+    )
+    // create return object of author and total number of likes
+    const likeTotalsByAuthor = {
+      author: author,
+      likes: calculateAuthorLikes
+    }
+
+    return likeTotalsByAuthor
+  })
+
+  return authorLikes.reduce((previous, current) => (previous.likes > current.likes ? previous : current) )
+}
+
 module.exports = {
   dummy,
   totalLikes,
   favouriteBlogs,
-  mostBlogs
+  mostBlogs,
+  mostLikes
 }
