@@ -45,6 +45,16 @@ describe('blogs api', () => {
     expect(contents).toContain('Jest Test Blog Post Title')
   })
 
+  test('if request is missing likes property, it will default to 0', async () => {
+    await api
+      .post('/api/blogs')
+      .send(helper.blogMissingLikes)
+
+    const response = await api.get('/api/blogs')
+    const contents = response.body.map(r => r.likes)
+    expect(contents[2]).toBe(0)
+  })
+
   afterAll(() => {
     mongooose.connection.close()
   })

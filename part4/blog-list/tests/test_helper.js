@@ -20,6 +20,12 @@ const newBlog = {
   'likes': 1
 }
 
+const blogMissingLikes = {
+  'title': 'Test Blog Missing Likes',
+  'author': 'Jest Test Author',
+  'url': 'https://jestjs.io/docs/',
+}
+
 module.exports = {
-  initialBlogs, newBlog
+  initialBlogs, newBlog, blogMissingLikes
 }
