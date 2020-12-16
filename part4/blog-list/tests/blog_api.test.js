@@ -55,6 +55,16 @@ describe('blogs api', () => {
     expect(contents[2]).toBe(0)
   })
 
+  test('blogs without titles and urls are not added', async () => {
+    await api
+      .post('/api/blogs')
+      .send(helper.blogMissingContent)
+      .expect(400)
+
+    const response = await api.get('/api/blogs')
+    expect(response.body).toHaveLength(helper.initialBlogs.length)
+  })
+
   afterAll(() => {
     mongooose.connection.close()
   })
