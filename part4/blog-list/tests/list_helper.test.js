@@ -97,3 +97,27 @@ describe('favourite blogs', () => {
     })
   })
 })
+
+describe('Most Blogs', () => {
+  test('when list has no blogs', () => {
+    const result = listHelper.mostBlogs(emptyList)
+    expect(result).toBe(null)
+  })
+
+  test('when list has only one blog equals the author blog count of that', () => {
+    const result = listHelper.mostBlogs(listWithOnlyOneBlog)
+    expect(result).toEqual({
+      'author': 'Tania Rascia',
+      'blogs': 1,
+    })
+  })
+
+  test('when list has multiple blog equals the author of highest blog count', () => {
+    const result = listHelper.mostBlogs(blogs)
+    console.log(result)
+    // expect(result).toEqual({
+    //   'author': 'Tania Rascia',
+    //   'blogs': 3,
+    // })
+  })
+})
