@@ -17,6 +17,11 @@ describe('blogs api', () => {
     expect(response.body).toHaveLength(5)
   })
 
+  test('_id is defined', async () => {
+    const response = await api.get('/api/blogs')
+    expect(response.body[0].id).toBeDefined()
+  })
+
   afterAll(() => {
     mongooose.connection.close()
   })
