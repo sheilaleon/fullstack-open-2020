@@ -24,6 +24,10 @@ h1 {
   align-items: center;
 }
 
+.add-blog-form {
+  padding: 2rem 0;
+}
+
 ul {
   list-style: none;
   padding: 0;

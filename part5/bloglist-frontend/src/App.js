@@ -5,10 +5,12 @@ import blogService from './services/blogs';
 import loginService from './services/login';
 
 import './App.css';
-import login from './services/login';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
+  const [title, setTitle] = useState('');
+  const [author, setAuthor] = useState('');
+  const [url, setUrl] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
@@ -35,6 +37,7 @@ const App = () => {
 
       window.localStorage.setItem('user', JSON.stringify(user));
 
+      blogService.setToken(user.token);
       setUser(user);
       setUsername('');
       setPassword('');
@@ -45,21 +48,38 @@ const App = () => {
 
   const handleLogout = (e) => {
     e.preventDefault();
-
     setUser(null);
     window.localStorage.removeItem('user');
   };
 
+  const createBlog = (e) => {
+    e.preventDefault();
+
+    const blogObject = {
+      title,
+      author,
+      url,
+    };
+
+    blogService.create(blogObject).then((returnedBlog) => {
+      setBlogs(blogs.concat(returnedBlog));
+      setTitle('');
+      setAuthor('');
+      setUrl('');
+    });
+  };
+
   const loginForm = () => (
-    <div>
+    <>
       <h1>Login</h1>
 
-      <form>
+      <form onSubmit={handleLogin}>
         <div className="form-field-container">
           <label htmlFor="username">Username</label>
           <input
             name="username"
             value={username}
+            type="text"
             onChange={({ target }) => setUsername(target.value)}
           />
         </div>
@@ -68,6 +88,7 @@ const App = () => {
           <input
             name="password"
             value={password}
+            type="password"
             onChange={({ target }) => setPassword(target.value)}
           />
         </div>
@@ -75,25 +96,59 @@ const App = () => {
           Login
         </button>
       </form>
-    </div>
+    </>
   );
 
   const blogList = () => (
-    <div>
-      <h1>Blog List</h1>
-
+    <>
+      <h1>Blogs</h1>
       <div className="user-actions">
         <p>{user.name} logged in.</p>
         <button className="btn-sm" onClick={handleLogout}>
           Log out
         </button>
       </div>
+
+      <div className="add-blog-form">
+        <h2>Create New</h2>
+        <form onSubmit={createBlog}>
+          <div className="form-field-container">
+            <label htmlFor="title">Title</label>
+            <input
+              name="title"
+              value={title}
+              type="text"
+              onChange={({ target }) => setTitle(target.value)}
+            />
+          </div>
+          <div className="form-field-container">
+            <label htmlFor="author">Author</label>
+            <input
+              name="author"
+              value={author}
+              type="text"
+              onChange={({ target }) => setAuthor(target.value)}
+            />
+          </div>
+          <div className="form-field-container">
+            <label htmlFor="url">Link URL</label>
+            <input
+              name="url"
+              value={url}
+              type="text"
+              onChange={({ target }) => setUrl(target.value)}
+            />
+          </div>
+          <button type="submit">Create</button>
+        </form>
+      </div>
+
       <ul>
         {blogs.map((blog) => (
           <Blog key={blog.id} blog={blog} />
         ))}
       </ul>
-    </div>
+    </>
   );
 
   return (
