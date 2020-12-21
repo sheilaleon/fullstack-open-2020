@@ -1,6 +1,4 @@
-
-
-const listHelper = require('../utils/list_helper')
+const helper = require('./test_helper')
 
 const emptyList = [
 ]
@@ -54,34 +52,34 @@ const blogs = [
 test('dummy returns 1', () => {
   const blogs = []
 
-  const result = listHelper.dummy(blogs)
+  const result = helper.dummy(blogs)
   expect(result).toBe(1)
 })
 
 describe('total likes', () => {
   test('of empty list is zero', () => {
-    const result = listHelper.totalLikes(emptyList)
+    const result = helper.totalLikes(emptyList)
     expect(result).toBe(0)
   })
   test('when list has only one blog equals the likes of that', () => {
-    const result = listHelper.totalLikes(listWithOnlyOneBlog)
+    const result = helper.totalLikes(listWithOnlyOneBlog)
     expect(result).toBe(12)
   })
 
   test('of a bigger list is calculated correctly', () => {
-    const result = listHelper.totalLikes(blogs)
+    const result = helper.totalLikes(blogs)
     expect(result).toBe(7)
   })
 })
 
 describe('favourite blogs', () => {
   test('when list has no blogs', () => {
-    const result = listHelper.favouriteBlogs(emptyList)
+    const result = helper.favouriteBlogs(emptyList)
     expect(result).toBe(null)
   })
 
   test('when list has only one blog equals the likes of that', () => {
-    const result = listHelper.favouriteBlogs(listWithOnlyOneBlog)
+    const result = helper.favouriteBlogs(listWithOnlyOneBlog)
     expect(result).toEqual({
       'author': 'Tania Rascia', 'likes': 12,
       'title': 'Understanding Modules, Import and Export in JavaScript'
@@ -89,7 +87,7 @@ describe('favourite blogs', () => {
   })
 
   test('when list has multiple blogs equals the most liked blog of that', () => {
-    const result = listHelper.favouriteBlogs(blogs)
+    const result = helper.favouriteBlogs(blogs)
     expect(result).toEqual({
       'author': 'Tania Rascia',
       'likes': 3,
@@ -100,12 +98,12 @@ describe('favourite blogs', () => {
 
 describe('Most Blogs', () => {
   test('when list has no blogs', () => {
-    const result = listHelper.mostBlogs(emptyList)
+    const result = helper.mostBlogs(emptyList)
     expect(result).toBe(null)
   })
 
   test('when list has only one blog equals the author blog count of that', () => {
-    const result = listHelper.mostBlogs(listWithOnlyOneBlog)
+    const result = helper.mostBlogs(listWithOnlyOneBlog)
     expect(result).toEqual({
       'author': 'Tania Rascia',
       'blogs': 1,
@@ -113,7 +111,7 @@ describe('Most Blogs', () => {
   })
 
   test('when list has multiple blog equals the author of highest blog count', () => {
-    const result = listHelper.mostBlogs(blogs)
+    const result = helper.mostBlogs(blogs)
     expect(result).toEqual({
       'author': 'Tania Rascia',
       'blogs': 3,
@@ -123,12 +121,12 @@ describe('Most Blogs', () => {
 
 describe('most likes', () => {
   test('when list has no blogs', () => {
-    const result = listHelper.mostLikes(emptyList)
+    const result = helper.mostLikes(emptyList)
     expect(result).toBe(null)
   })
 
   test('when list has only one blog equals the author likes of that', () => {
-    const result = listHelper.mostLikes(listWithOnlyOneBlog)
+    const result = helper.mostLikes(listWithOnlyOneBlog)
     expect(result).toEqual({
       'author': 'Tania Rascia',
       'likes': 12
@@ -136,7 +134,7 @@ describe('most likes', () => {
   })
 
   test('when list has multiple blog equals the author of highest likes', () => {
-    const result = listHelper.mostLikes(blogs)
+    const result = helper.mostLikes(blogs)
     expect(result).toEqual({
       'author': 'Tania Rascia',
       'likes': 5
