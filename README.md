@@ -31,3 +31,9 @@ Course completion: ⏳ In Progress...
 🔍 [View Exercise Solutions 3.1-3.22](./part3)
 
 - [Phonebook Backend](./part3/phonebook-backend)
+
+### Part 4: [Testing Express servers, user administration](https://fullstackopen.com/en/part4)
+
+🔍 [View Exercise Solutions 4.1-4.22](./part4)
+
+- [Blogs List Application](./part4/blog-list)
