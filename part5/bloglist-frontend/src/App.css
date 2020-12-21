@@ -18,6 +18,12 @@ h1 {
   max-width: 16rem;
 }
 
+.user-actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 ul {
   list-style: none;
   padding: 0;
@@ -52,4 +58,12 @@ button {
   color: #fff;
   font-size: 1rem;
   cursor: pointer;
+}
+
+button.btn-sm {
+  display: inline-block;
+  margin: 0 0 0 0.6rem;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.8rem;
+  line-height: 1;
 }
