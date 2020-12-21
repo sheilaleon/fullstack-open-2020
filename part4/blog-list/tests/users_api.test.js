@@ -42,8 +42,8 @@ describe('When there is initially one user in db', () => {
     const usersAtStart = await helper.usersInDb()
 
     const newUser = {
-      username: 'tester',
-      name: 'Test user',
+      username: 'root',
+      name: 'root user',
       password: 'XW_bm_G4DnqT',
     }
 
@@ -53,10 +53,52 @@ describe('When there is initially one user in db', () => {
       .expect(400)
       .expect('Content-Type', /application\/json/)
 
-    expect(result.body.error).toContain('User validation failed')
+    expect(result.body.error).toContain('expected `username` to be unique')
 
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd).toHaveLength(usersAtStart.length)
+  })
+
+  test('User creation will fail when username is less than 3 characters', async () => {
+    const usersAtStart = await helper.usersInDb()
+
+    const newUser = {
+      username: 'ab',
+      name: 'Testing short username',
+      password: 'XW_bm_G4DnqT',
+    }
+
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    expect(result.body.message).toContain('Username must be at least 3 characters long')
+
+    const response = await api.get('/api/users')
+    expect(response.body).toHaveLength(usersAtStart.length)
+  })
+
+  test('User creation will fail when password is less than 3 characters', async () => {
+    const usersAtStart = await helper.usersInDb()
+
+    const newUser = {
+      username: 'testPassword',
+      name: 'Testing short password',
+      password: 'XW',
+    }
+
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    expect(result.body.message).toContain('Password must be at least 3 characters long')
+
+    const response = await api.get('/api/users')
+    expect(response.body).toHaveLength(usersAtStart.length)
   })
 
   afterAll(() => {
