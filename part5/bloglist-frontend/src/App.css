@@ -28,6 +28,31 @@ h1 {
   padding: 2rem 0;
 }
 
+.notification {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background-color: #ccc;
+  border: 1px #aaa solid;
+  border-radius: 0.3rem;
+  font-size: 1.2rem;
+  padding: 0.24rem 1.4rem;
+  margin-bottom: 2rem;
+  z-index: 10;
+}
+
+.success {
+  background-color: #bfe1d7;
+  border: 1px #047857 solid;
+  color: #047857;
+}
+
+.error {
+  background-color: #fef2f2;
+  border: 1px #f87171 solid;
+  color: #b91c1c;
+}
+
 ul {
   list-style: none;
   padding: 0;
