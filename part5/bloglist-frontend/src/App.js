@@ -89,6 +89,11 @@ const App = () => {
       });
   };
 
+  const blogsSortedByLikes = blogs.sort(function (a, b) {
+    return b.likes - a.likes;
+  });
+  console.log(blogsSortedByLikes);
+
   return (
     <div className="container">
       <h1>{user === null ? `Login` : `Blogs`}</h1>
