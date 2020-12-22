@@ -4,7 +4,7 @@ import loginService from './services/login';
 import blogService from './services/blogs';
 
 import Login from './components/Login';
-import BlogList from './components/BlogList';
+import BlogItem from './components/BlogItem';
 import BlogForm from './components/BlogForm';
 import Toggle from './components/Toggle';
 import Notification from './components/Notification';
@@ -115,7 +115,11 @@ const App = () => {
           <Toggle buttonLabel={'Add New Blog'} ref={blogFormRef}>
             <BlogForm createBlog={createBlog} />
           </Toggle>
-          <BlogList blogs={blogs} />
+          <ul>
+            {blogs.map((blog) => (
+              <BlogItem key={blog.id} blog={blog} />
+            ))}
+          </ul>
         </>
       )}
     </div>

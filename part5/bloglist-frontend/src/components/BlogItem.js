@@ -1,12 +1,28 @@
 import React, { useState } from 'react';
 
-const Blog = ({ blog, user }) => {
+import blogService from '../services/blogs';
+
+const BlogItem = ({ blog, user }) => {
   const [visible, setVisible] = useState(false);
+  const [likePost, setLikePost] = useState(false);
 
   const show = { display: visible ? '' : 'none' };
 
   const toggleVisibility = () => {
     setVisible(!visible);
+  };
+
+  const likeBlog = () => {
+    const blogId = blog.id;
+    setLikePost(true);
+    const updateBlog = {
+      ...blog,
+      likes: ++blog.likes,
+    };
+
+    blogService.update(blogId, updateBlog).then((returnedBlog) => {
+      setLikePost(false);
+    });
   };
 
   return (
@@ -16,7 +32,7 @@ const Blog = ({ blog, user }) => {
           <strong>{blog.title}</strong> by: {blog.author}
         </span>
         <div style={show}>
-          <a href="{blog.url}" target="_blank">
+          <a href={blog.url} target="_blank" rel="noopener noreferrer">
             {blog.url}
           </a>
           <div>
@@ -30,7 +46,9 @@ const Blog = ({ blog, user }) => {
               </span>
             )}
 
-            <button className="btn-sm secondary">Like</button>
+            <button className="btn-sm secondary" onClick={() => likeBlog()}>
+              Like
+            </button>
           </div>
           <span>Saved by {blog.user.name}</span>
         </div>
@@ -42,4 +60,4 @@ const Blog = ({ blog, user }) => {
   );
 };
 
-export default Blog;
+export default BlogItem;
