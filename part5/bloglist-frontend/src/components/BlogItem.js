@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 
 import blogService from '../services/blogs';
 
-const BlogItem = ({ blog, user }) => {
+const BlogItem = ({ blog }) => {
   const [visible, setVisible] = useState(false);
-  const [liked, setLiked] = useState(false);
 
   const show = { display: visible ? '' : 'none' };
 
@@ -12,17 +11,27 @@ const BlogItem = ({ blog, user }) => {
     setVisible(!visible);
   };
 
+  const loggedInUser = JSON.parse(window.localStorage.getItem('user'));
+
   const likeBlog = () => {
     const blogId = blog.id;
-    setLiked(!liked);
     const updateBlog = {
       ...blog,
       likes: ++blog.likes,
     };
 
     blogService.update(blogId, updateBlog).then((returnedBlog) => {
-      setLiked(!liked);
+      toggleVisibility();
     });
+  };
+
+  const deleteBlog = (e) => {
+    if (window.confirm(`Remove blog "${blog.title}" by ${blog.author}?`)) {
+      blogService.remove(blog.id).catch((error) => {
+        console.log(error);
+      });
+      toggleVisibility();
+    }
   };
 
   return (
@@ -46,11 +55,22 @@ const BlogItem = ({ blog, user }) => {
               </span>
             )}
 
-            <button className="btn-sm secondary" onClick={() => likeBlog()}>
+            <button className="btn-sm secondary" onClick={likeBlog}>
               Like
             </button>
           </div>
-          <span>Saved by {blog.user.name}</span>
+          <div>
+            <span>Saved by {blog.user.name}</span>
+          </div>
+          {blog.user.username === loggedInUser.username ? (
+            <button
+              className="btn-sm secondary"
+              style={{ display: 'block' }}
+              onClick={deleteBlog}
+            >
+              Remove
+            </button>
+          ) : null}
         </div>
       </div>
       <button className="btn-sm secondary" onClick={toggleVisibility}>
