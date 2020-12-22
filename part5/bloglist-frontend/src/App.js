@@ -6,6 +6,7 @@ import blogService from './services/blogs';
 import Login from './components/Login';
 import BlogList from './components/BlogList';
 import BlogForm from './components/BlogForm';
+import Toggle from './components/Toggle';
 import Notification from './components/Notification';
 
 import './App.css';
@@ -116,19 +117,21 @@ const App = () => {
         <>
           <div className="user-actions">
             <p>{user.name} logged in.</p>
-            <button className="btn-sm" onClick={handleLogout}>
+            <button className="btn-sm secondary" onClick={handleLogout}>
               Log out
             </button>
           </div>
-          <BlogForm
-            title={title}
-            setTitle={setTitle}
-            author={author}
-            setAuthor={setAuthor}
-            url={url}
-            setUrl={setUrl}
-            createBlog={createBlog}
-          />
+          <Toggle buttonLabel={'New Note'}>
+            <BlogForm
+              title={title}
+              setTitle={setTitle}
+              author={author}
+              setAuthor={setAuthor}
+              url={url}
+              setUrl={setUrl}
+              createBlog={createBlog}
+            />
+          </Toggle>
           <BlogList blogs={blogs} />
         </>
       )}

@@ -24,8 +24,12 @@ h1 {
   align-items: center;
 }
 
+.user-actions p {
+  margin-right: 0.6rem;
+}
+
 .add-blog-form {
-  padding: 2rem 0;
+  padding-top: 2rem;
 }
 
 .notification {
@@ -91,8 +95,14 @@ button {
 
 button.btn-sm {
   display: inline-block;
-  margin: 0 0 0 0.6rem;
+  margin: 0;
   padding: 0.6rem 0.8rem;
   font-size: 0.8rem;
   line-height: 1;
+}
+
+button.secondary {
+  background-color: #ccc;
+  border: 1px #bbb solid;
+  color: #333;
 }
