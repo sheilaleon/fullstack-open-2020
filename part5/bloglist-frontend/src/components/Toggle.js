@@ -34,6 +34,8 @@ const Toggle = React.forwardRef((props, ref) => {
   );
 });
 
+Toggle.displayName = 'Toggle';
+
 Toggle.propTypes = {
   buttonLabel: PropTypes.string.isRequired,
 };
