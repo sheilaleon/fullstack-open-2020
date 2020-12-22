@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import loginService from './services/login';
 import blogService from './services/blogs';
@@ -40,6 +40,8 @@ const App = () => {
     }
   }, []);
 
+  const blogFormRef = useRef();
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -73,6 +75,7 @@ const App = () => {
       .create(blogObject)
       .then((returnedBlog) => {
         setBlogs(blogs.concat(returnedBlog));
+        blogFormRef.current.toggleVisibility();
         setNotification(
           `A new blog "${blogObject.title}" by ${blogObject.author} has been added.`,
         );
@@ -109,7 +112,7 @@ const App = () => {
               Log out
             </button>
           </div>
-          <Toggle buttonLabel={'Add New Blog'}>
+          <Toggle buttonLabel={'Add New Blog'} ref={blogFormRef}>
             <BlogForm createBlog={createBlog} />
           </Toggle>
           <BlogList blogs={blogs} />
