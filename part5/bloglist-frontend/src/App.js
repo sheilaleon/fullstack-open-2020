@@ -13,9 +13,6 @@ import './App.css';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
-  const [title, setTitle] = useState('');
-  const [author, setAuthor] = useState('');
-  const [url, setUrl] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
@@ -33,7 +30,7 @@ const App = () => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
   }, []);
 
-  // Set User's token if logged in
+  // * Set User's token if logged in
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('user');
     if (loggedUserJSON) {
@@ -71,23 +68,14 @@ const App = () => {
     setUser(null);
   };
 
-  const createBlog = (e) => {
-    e.preventDefault();
-
-    const blogObject = {
-      title,
-      author,
-      url,
-    };
-
+  const createBlog = (blogObject) => {
     blogService
       .create(blogObject)
       .then((returnedBlog) => {
         setBlogs(blogs.concat(returnedBlog));
-        setTitle('');
-        setAuthor('');
-        setUrl('');
-        setNotification(`A new blog "${title}" by ${author} has been added.`);
+        setNotification(
+          `A new blog "${blogObject.title}" by ${blogObject.author} has been added.`,
+        );
         setNotificationState('success');
         displayNotification();
       })
@@ -121,16 +109,8 @@ const App = () => {
               Log out
             </button>
           </div>
-          <Toggle buttonLabel={'New Note'}>
-            <BlogForm
-              title={title}
-              setTitle={setTitle}
-              author={author}
-              setAuthor={setAuthor}
-              url={url}
-              setUrl={setUrl}
-              createBlog={createBlog}
-            />
+          <Toggle buttonLabel={'Add New Blog'}>
+            <BlogForm createBlog={createBlog} />
           </Toggle>
           <BlogList blogs={blogs} />
         </>
