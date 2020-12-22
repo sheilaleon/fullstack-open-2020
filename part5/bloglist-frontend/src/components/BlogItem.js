@@ -4,7 +4,7 @@ import blogService from '../services/blogs';
 
 const BlogItem = ({ blog, user }) => {
   const [visible, setVisible] = useState(false);
-  const [likePost, setLikePost] = useState(false);
+  const [liked, setLiked] = useState(false);
 
   const show = { display: visible ? '' : 'none' };
 
@@ -14,14 +14,14 @@ const BlogItem = ({ blog, user }) => {
 
   const likeBlog = () => {
     const blogId = blog.id;
-    setLikePost(true);
+    setLiked(!liked);
     const updateBlog = {
       ...blog,
       likes: ++blog.likes,
     };
 
     blogService.update(blogId, updateBlog).then((returnedBlog) => {
-      setLikePost(false);
+      setLiked(!liked);
     });
   };
 

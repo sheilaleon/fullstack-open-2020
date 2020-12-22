@@ -92,7 +92,6 @@ const App = () => {
   const blogsSortedByLikes = blogs.sort(function (a, b) {
     return b.likes - a.likes;
   });
-  console.log(blogsSortedByLikes);
 
   return (
     <div className="container">
@@ -121,7 +120,7 @@ const App = () => {
             <BlogForm createBlog={createBlog} />
           </Toggle>
           <ul>
-            {blogs.map((blog) => (
+            {blogsSortedByLikes.map((blog) => (
               <BlogItem key={blog.id} blog={blog} />
             ))}
           </ul>
