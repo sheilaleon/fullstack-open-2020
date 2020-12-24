@@ -32,10 +32,10 @@ const BlogItem = ({ blog, user, likeBlog, removeBlog }) => {
   return (
     <li className="blog-item">
       <div>
-        <span>
+        <span data-test="blog-title">
           <strong>{blog.title}</strong> by: {blog.author}
         </span>
-        <div style={show}>
+        <div data-test="hidden" style={show}>
           <a href={blog.url} target="_blank" rel="noopener noreferrer">
             {blog.url}
           </a>
