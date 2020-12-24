@@ -36,10 +36,15 @@ const BlogItem = ({ blog, user, likeBlog, removeBlog }) => {
           <strong>{blog.title}</strong> by: {blog.author}
         </span>
         <div data-test="hidden" style={show}>
-          <a href={blog.url} target="_blank" rel="noopener noreferrer">
+          <a
+            href={blog.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-test="url"
+          >
             {blog.url}
           </a>
-          <div>
+          <div data-test="likes">
             {blog.likes === 1 ? (
               <span>
                 <strong>{blog.likes}</strong> Like

@@ -1,6 +1,6 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import { render } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 
 import BlogItem from './BlogItem';
 
@@ -40,5 +40,22 @@ describe('<BlogItem />', () => {
     expect(
       component.container.querySelector('[data-test="hidden"]'),
     ).toHaveStyle('display: none');
+  });
+
+  test('Blog likes and url are shown when View button is clicked', () => {
+    const button = component.getByText('View');
+    fireEvent.click(button);
+
+    expect(
+      component.container.querySelector('[data-test="hidden"]'),
+    ).toBeVisible();
+    expect(
+      component.container.querySelector('[data-test="url"]'),
+    ).toHaveTextContent(
+      'https://www.taniarascia.com/javascript-modules-import-export/',
+    );
+    expect(
+      component.container.querySelector('[data-test="likes"]'),
+    ).toHaveTextContent('10');
   });
 });
