@@ -89,9 +89,20 @@ const App = () => {
       });
   };
 
+  const likeBlog = (id, blogObject) => {
+    blogService.update(id, blogObject).then((returnedBlog) => {
+      setBlogs(blogs.map((blog) => (blog.id !== id ? blog : returnedBlog)));
+    });
+  };
   const blogsSortedByLikes = blogs.sort(function (a, b) {
     return b.likes - a.likes;
   });
+
+  const removeBlog = (id) => {
+    blogService.remove(id).then((returnedBlog) => {
+      setBlogs(blogs.filter((blog) => blog.id !== id));
+    });
+  };
 
   return (
     <div className="container">
@@ -121,7 +132,13 @@ const App = () => {
           </Toggle>
           <ul>
             {blogsSortedByLikes.map((blog) => (
-              <BlogItem key={blog.id} blog={blog} />
+              <BlogItem
+                key={blog.id}
+                blog={blog}
+                user={user}
+                likeBlog={likeBlog}
+                removeBlog={removeBlog}
+              />
             ))}
           </ul>
         </>

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
-import blogService from '../services/blogs';
-
-const BlogItem = ({ blog }) => {
+const BlogItem = ({ blog, user, likeBlog, removeBlog }) => {
   const [visible, setVisible] = useState(false);
+
+  const blogAuthor = blog.user.name;
 
   const show = { display: visible ? '' : 'none' };
 
@@ -11,26 +11,21 @@ const BlogItem = ({ blog }) => {
     setVisible(!visible);
   };
 
-  const loggedInUser = JSON.parse(window.localStorage.getItem('user'));
-
-  const likeBlog = () => {
-    const blogId = blog.id;
-    const updateBlog = {
-      ...blog,
+  const like = () => {
+    const { id, title, author, url, user } = blog;
+    const blogObject = {
+      user,
       likes: ++blog.likes,
+      title,
+      author,
+      url,
     };
-
-    blogService.update(blogId, updateBlog).then((returnedBlog) => {
-      toggleVisibility();
-    });
+    likeBlog(id, blogObject);
   };
 
-  const deleteBlog = (e) => {
+  const remove = (e) => {
     if (window.confirm(`Remove blog "${blog.title}" by ${blog.author}?`)) {
-      blogService.remove(blog.id).catch((error) => {
-        console.log(error);
-      });
-      toggleVisibility();
+      removeBlog(blog.id);
     }
   };
 
@@ -55,22 +50,24 @@ const BlogItem = ({ blog }) => {
               </span>
             )}
 
-            <button className="btn-sm secondary" onClick={likeBlog}>
+            <button className="btn-sm secondary" onClick={like}>
               Like
             </button>
           </div>
           <div>
-            <span>Saved by {blog.user.name}</span>
+            <span>Saved by {blogAuthor}</span>
           </div>
-          {blog.user.username === loggedInUser.username ? (
-            <button
-              className="btn-sm secondary"
-              style={{ display: 'block' }}
-              onClick={deleteBlog}
-            >
-              Remove
-            </button>
-          ) : null}
+          <div>
+            {blog.user.username === user.username ? (
+              <button
+                className="btn-sm secondary"
+                style={{ display: 'block' }}
+                onClick={remove}
+              >
+                Remove
+              </button>
+            ) : null}
+          </div>
         </div>
       </div>
       <button className="btn-sm secondary" onClick={toggleVisibility}>
