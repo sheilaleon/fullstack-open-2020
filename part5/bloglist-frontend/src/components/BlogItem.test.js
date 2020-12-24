@@ -7,8 +7,12 @@ import BlogItem from './BlogItem';
 describe('<BlogItem />', () => {
   let component;
 
+  const likeBlog = jest.fn();
+
   beforeEach(() => {
-    component = render(<BlogItem user={user} blog={blog} />);
+    component = render(
+      <BlogItem user={user} blog={blog} likeBlog={likeBlog} />,
+    );
   });
 
   const blog = {
@@ -57,5 +61,13 @@ describe('<BlogItem />', () => {
     expect(
       component.container.querySelector('[data-test="likes"]'),
     ).toHaveTextContent('10');
+  });
+
+  test('Two events are received if like button has been clicked twice', () => {
+    const button = component.getByText('Like');
+    fireEvent.click(button);
+    fireEvent.click(button);
+
+    expect(likeBlog.mock.calls).toHaveLength(2);
   });
 });
