@@ -58,7 +58,7 @@ const App = () => {
       setPassword('');
     } catch (exception) {
       console.log('exception :>> ', exception);
-      setNotification(`Incorrect username of password`);
+      setNotification(`Incorrect username or password`);
       setNotificationState('error');
       displayNotification();
     }
