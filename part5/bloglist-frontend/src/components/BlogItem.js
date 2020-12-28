@@ -3,8 +3,6 @@ import React, { useState } from 'react';
 const BlogItem = ({ blog, user, likeBlog, removeBlog }) => {
   const [visible, setVisible] = useState(false);
 
-  const blogAuthor = blog.user.name;
-
   const show = { display: visible ? '' : 'none' };
 
   const toggleVisibility = () => {
@@ -60,7 +58,7 @@ const BlogItem = ({ blog, user, likeBlog, removeBlog }) => {
             </button>
           </div>
           <div>
-            <span>Saved by {blogAuthor}</span>
+            <span>Saved by {blog.user.name}</span>
           </div>
           <div>
             {blog.user.username === user.username ? (
