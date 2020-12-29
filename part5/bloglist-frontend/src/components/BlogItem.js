@@ -43,16 +43,10 @@ const BlogItem = ({ blog, user, likeBlog, removeBlog }) => {
             {blog.url}
           </a>
           <div data-test="likes">
-            {blog.likes === 1 ? (
-              <span>
-                <strong>{blog.likes}</strong> Like
-              </span>
-            ) : (
-              <span>
-                <strong>{blog.likes}</strong> Likes
-              </span>
-            )}
-
+            <span>
+              <strong>{blog.likes} </strong>
+              {blog.likes === 1 ? 'Like' : 'Likes'}
+            </span>
             <button
               className="btn-sm secondary"
               data-cy="blog-like"

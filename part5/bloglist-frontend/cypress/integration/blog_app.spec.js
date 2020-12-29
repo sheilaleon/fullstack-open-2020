@@ -113,4 +113,60 @@ describe('Blog app', function () {
       cy.contains('Remove').should('not.exist');
     });
   });
+
+  describe.only('Blog listings', function () {
+    beforeEach(function () {
+      cy.login({ username: 'testUser', password: 'secretPassword' });
+      cy.createBlog({
+        title: 'Docker Tutorial: Create a CI/CD Pipeline',
+        author: 'Tania Rascia',
+        url:
+          'https://www.taniarascia.com/continuous-integration-pipeline-docker/',
+        likes: 10,
+      });
+      cy.createBlog({
+        title: 'Understanding Generators in JavaScript',
+        author: 'Tania Rascia',
+        url:
+          'https://www.taniarascia.com/understanding-generators-in-javascript/',
+        likes: 2,
+      });
+      cy.createBlog({
+        title: 'Redux Tutorial: An Overview and Walkthrough',
+        author: 'Tania Rascia',
+        url: 'https://www.taniarascia.com/redux-react-guide/',
+        likes: 0,
+      });
+      cy.createBlog({
+        title: 'How Stripe Designs Beautiful Websites',
+        author: 'Lee Robinson',
+        url: 'https://leerob.io/blog/how-stripe-designs-beautiful-websites',
+        likes: 3,
+      });
+      cy.createBlog({
+        title: 'Authentication Patterns for Next.js',
+        author: 'Lee Robinson',
+        url: 'https://leerob.io/blog/nextjs-authentication',
+        likes: 6,
+      });
+    });
+
+    it('blogs are ordered by number of likes', function () {
+      cy.get('[data-test="likes"]').then(($blog) => {
+        expect($blog).to.have.length(5);
+
+        for (let i = 0; i < $blog.length; i++) {
+          if (i < $blog.length - 1) {
+            expect(Number($blog.find('strong')[i].innerText)).to.be.least(
+              Number($blog.find('strong')[i + 1].innerText),
+            );
+          } else {
+            expect(Number($blog.find('strong')[i].innerText)).to.be.most(
+              Number($blog.find('strong')[0].innerText),
+            );
+          }
+        }
+      });
+    });
+  });
 });
