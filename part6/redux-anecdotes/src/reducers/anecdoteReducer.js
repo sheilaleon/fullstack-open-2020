@@ -42,6 +42,7 @@ const reducer = (state = initialState, action) => {
   }
 };
 
+// 6.6: anecdotes, step4
 export const vote = (id) => {
   return {
     type: 'VOTE',
