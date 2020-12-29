@@ -1,17 +1,23 @@
 module.exports = {
   env: {
+    browser: true,
     commonjs: true,
     es6: true,
     node: true,
     jest: true,
   },
-  extends: 'eslint:recommended',
+  extends: ['eslint:recommended', 'plugin:react/recommended'],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
   },
+  plugins: ['react', 'jest'],
   parserOptions: {
+    ecmaFeatures: {
+      jsx: true,
+    },
     ecmaVersion: 2018,
+    sourceType: 'module',
   },
   rules: {
     indent: ['error', 2],
@@ -23,5 +29,11 @@ module.exports = {
     'object-curly-spacing': ['error', 'always'],
     'arrow-spacing': ['error', { before: true, after: true }],
     'no-console': 0,
+    'react/prop-types': 0,
   },
-}
+  settings: {
+    react: {
+      version: 'detect',
+    },
+  },
+};
