@@ -2,7 +2,7 @@
 
 This repo contains my answers and solutions to the Full Stack Open 2020 course: https://fullstackopen.com/
 
-Course completion: ⏳ In Progress...
+Course completion: ⏳ In Progress, part 5 completed...
 
 ---
 
@@ -37,3 +37,10 @@ Course completion: ⏳ In Progress...
 🔍 [View Exercise Solutions 4.1-4.22](./part4)
 
 - [Blogs List Application](./part4/blog-list)
+
+### Part 5: [Testing React apps](https://fullstackopen.com/en/part5)
+
+🔍 [View Exercise Solutions 5.1-5.22](./part5)
+
+- [Blogs List Frontend](./part5/bloglist-frontend)
+- [Blogs List Application (Backend)](./part4/blog-list)
