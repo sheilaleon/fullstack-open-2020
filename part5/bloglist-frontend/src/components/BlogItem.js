@@ -53,7 +53,11 @@ const BlogItem = ({ blog, user, likeBlog, removeBlog }) => {
               </span>
             )}
 
-            <button className="btn-sm secondary" onClick={like}>
+            <button
+              className="btn-sm secondary"
+              data-cy="blog-like"
+              onClick={like}
+            >
               Like
             </button>
           </div>
@@ -73,7 +77,11 @@ const BlogItem = ({ blog, user, likeBlog, removeBlog }) => {
           </div>
         </div>
       </div>
-      <button className="btn-sm secondary" onClick={toggleVisibility}>
+      <button
+        className="btn-sm secondary"
+        data-cy="blog-view"
+        onClick={toggleVisibility}
+      >
         View
       </button>
     </li>

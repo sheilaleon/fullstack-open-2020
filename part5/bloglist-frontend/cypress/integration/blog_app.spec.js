@@ -37,13 +37,13 @@ describe('Blog app', function () {
     });
   });
 
-  describe('When logged in', function () {
+  describe.only('When logged in', function () {
     // Login user before each test
     beforeEach(function () {
       cy.login({ username: 'testUser', password: 'secretPassword' });
     });
 
-    it.only('A blog can be created', function () {
+    it('A blog can be created', function () {
       cy.contains('Add New Blog').click();
 
       cy.get('[data-cy="add-blog-title"]').type(
@@ -56,6 +56,25 @@ describe('Blog app', function () {
       cy.get('[data-cy="add-blog-submit"]').click();
 
       cy.contains('Understanding Generators in JavaScript');
+    });
+
+    describe('and a blog exists', function () {
+      beforeEach(function () {
+        cy.createBlog({
+          title: 'Understanding Generators in JavaScript',
+          author: 'Tania Rascia',
+          url:
+            'https://www.taniarascia.com/understanding-generators-in-javascript/',
+        });
+      });
+
+      it('it can be liked', function () {
+        cy.get('[data-cy="blog-view"]').click();
+        cy.contains('0 Likes');
+
+        cy.get('[data-cy="blog-like"]').click();
+        cy.contains('1 Like');
+      });
     });
   });
 });
