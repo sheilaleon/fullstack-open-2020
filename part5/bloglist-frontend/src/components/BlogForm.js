@@ -29,6 +29,7 @@ const BlogForm = ({ createBlog }) => {
             name="title"
             value={title}
             type="text"
+            data-cy="add-blog-title"
             onChange={({ target }) => setTitle(target.value)}
           />
         </div>
@@ -38,6 +39,7 @@ const BlogForm = ({ createBlog }) => {
             name="author"
             value={author}
             type="text"
+            data-cy="add-blog-author"
             onChange={({ target }) => setAuthor(target.value)}
           />
         </div>
@@ -47,10 +49,13 @@ const BlogForm = ({ createBlog }) => {
             name="url"
             value={url}
             type="url"
+            data-cy="add-blog-url"
             onChange={({ target }) => setUrl(target.value)}
           />
         </div>
-        <button type="submit">Create</button>
+        <button type="submit" data-cy="add-blog-submit">
+          Create
+        </button>
       </form>
     </div>
   );

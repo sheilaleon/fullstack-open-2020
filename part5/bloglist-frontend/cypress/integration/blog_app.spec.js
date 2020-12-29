@@ -36,4 +36,26 @@ describe('Blog app', function () {
       cy.get('.error').should('have.css', 'color', 'rgb(185, 28, 28)');
     });
   });
+
+  describe('When logged in', function () {
+    // Login user before each test
+    beforeEach(function () {
+      cy.login({ username: 'testUser', password: 'secretPassword' });
+    });
+
+    it.only('A blog can be created', function () {
+      cy.contains('Add New Blog').click();
+
+      cy.get('[data-cy="add-blog-title"]').type(
+        'Understanding Generators in JavaScript',
+      );
+      cy.get('[data-cy="add-blog-author"]').type('Tania Rascia');
+      cy.get('[data-cy="add-blog-url"]').type(
+        'https://www.taniarascia.com/understanding-generators-in-javascript/',
+      );
+      cy.get('[data-cy="add-blog-submit"]').click();
+
+      cy.contains('Understanding Generators in JavaScript');
+    });
+  });
 });
