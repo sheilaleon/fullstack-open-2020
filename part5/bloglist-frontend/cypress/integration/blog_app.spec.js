@@ -4,14 +4,11 @@ describe('Blog app', function () {
     cy.request('POST', 'http://localhost:3001/api/testing/reset');
 
     //  Create a new user to login
-    const user = {
+    cy.createUser({
       username: 'testUser',
       name: 'Test User',
       password: 'secretPassword',
-    };
-    cy.request('POST', 'http://localhost:3001/api/users', user);
-
-    cy.visit('http://localhost:3000');
+    });
   });
 
   it('login form is shown when not logged in', function () {
@@ -37,7 +34,7 @@ describe('Blog app', function () {
     });
   });
 
-  describe.only('When logged in', function () {
+  describe('When logged in', function () {
     // Login user before each test
     beforeEach(function () {
       cy.login({ username: 'testUser', password: 'secretPassword' });
@@ -75,6 +72,45 @@ describe('Blog app', function () {
         cy.get('[data-cy="blog-like"]').click();
         cy.contains('1 Like');
       });
+
+      it('it can be deleted', function () {
+        cy.get('[data-cy="blog-view"]').click();
+        cy.contains('Understanding Generators in JavaScript').should('exist');
+
+        cy.get('[data-cy="blog-delete"]').click();
+        cy.contains('Understanding Generators in JavaScript').should(
+          'not.exist',
+        );
+      });
+    });
+  });
+
+  describe('When another user logs in', function () {
+    beforeEach(function () {
+      // create a blog post under another user
+      cy.login({ username: 'testUser', password: 'secretPassword' });
+      cy.createBlog({
+        title: 'Docker Tutorial: Create a CI/CD Pipeline',
+        author: 'Tania Rascia',
+        url:
+          'https://www.taniarascia.com/continuous-integration-pipeline-docker/',
+      });
+
+      // create a new user to test deletion
+      cy.createUser({
+        username: 'differentUser',
+        name: 'Different User',
+        password: 'password',
+      });
+      cy.login({ username: 'differentUser', password: 'password' });
+    });
+
+    it('user cannot delete a blog created by a different user', function () {
+      cy.contains('Different User logged in.');
+      cy.contains('Docker Tutorial: Create a CI/CD Pipeline');
+
+      cy.get('[data-cy="blog-view"]').click();
+      cy.contains('Remove').should('not.exist');
     });
   });
 });

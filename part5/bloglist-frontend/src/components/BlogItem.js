@@ -70,6 +70,7 @@ const BlogItem = ({ blog, user, likeBlog, removeBlog }) => {
                 className="btn-sm secondary"
                 style={{ display: 'block' }}
                 onClick={remove}
+                data-cy="blog-delete"
               >
                 Remove
               </button>
