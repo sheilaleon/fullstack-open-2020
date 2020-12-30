@@ -2,29 +2,36 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { vote } from '../reducers/anecdoteReducer';
+import { removeMessage, setMessage } from '../reducers/notificationReducer';
 
 const AnecdoteList = () => {
   const anecdotes = useSelector((state) => state.anecdote);
   const dispatch = useDispatch();
 
+  const upVote = (votedAnecdote) => {
+    dispatch(vote(votedAnecdote.id));
+    dispatch(setMessage(`You've upvoted "${votedAnecdote.content}"`));
+    setTimeout(() => {
+      dispatch(removeMessage());
+    }, 5000);
+  };
+
   return (
-    <>
-      <br />
-      <br />
+    <ul>
       {anecdotes
         .sort(function (a, b) {
           return b.votes - a.votes;
         })
         .map((anecdote) => (
-          <div key={anecdote.id}>
-            <div>{anecdote.content}</div>
-            <div>
+          <li key={anecdote.id}>
+            <span>{anecdote.content}</span>
+            <div className="vote-container">
               has {anecdote.votes}
-              <button onClick={() => dispatch(vote(anecdote.id))}>vote</button>
+              <button onClick={() => upVote(anecdote)}>vote</button>
             </div>
-          </div>
+          </li>
         ))}
-    </>
+    </ul>
   );
 };
 

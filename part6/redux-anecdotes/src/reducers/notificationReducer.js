@@ -1,23 +1,29 @@
-const notificationsAtStart = ['Success!', 'Fail!'];
-
-const asObject = (notification) => {
-  return {
-    notification,
-  };
-};
-
-const initialState = notificationsAtStart.map(asObject);
-
-const reducer = (state = initialState, action) => {
-  console.log('state :>> ', state);
-  console.log('action :>> ', action);
-
+const reducer = (state = null, action) => {
   switch (action.type) {
-    case 'NOTIFY':
-      return state.notification;
+    case 'SET_MESSAGE': {
+      return action.message;
+    }
+    case 'REMOVE_MESSAGE':
+      return null;
     default:
       return state;
   }
+};
+
+export const setMessage = (message, timeout) => {
+  return {
+    type: 'SET_MESSAGE',
+    timeout: setTimeout(() => {
+      removeMessage();
+    }, timeout),
+    message,
+  };
+};
+
+export const removeMessage = () => {
+  return {
+    type: 'REMOVE_MESSAGE',
+  };
 };
 
 export default reducer;
