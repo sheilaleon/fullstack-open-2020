@@ -1,14 +1,5 @@
-const getId = () => (100000 * Math.random()).toFixed(0);
-
-const asObject = (anecdote) => {
-  return {
-    content: anecdote,
-    id: getId(),
-    votes: 0,
-  };
-};
-
 const reducer = (state = [], action) => {
+  console.log('action :>> ', action);
   switch (action.type) {
     case 'VOTE':
       const id = action.data.id;
@@ -21,8 +12,7 @@ const reducer = (state = [], action) => {
         anecdote.id !== id ? anecdote : changeAnecdote,
       );
     case 'NEW_ANECDOTE':
-      const newAnecdote = asObject(action.data.anecdote);
-      return [...state, newAnecdote];
+      return [...state, action.data];
     case 'INIT_NOTES':
       return action.data;
     default:
@@ -38,10 +28,10 @@ export const vote = (id) => {
   };
 };
 
-export const createAnecdote = (anecdote) => {
+export const createAnecdote = (data) => {
   return {
     type: 'NEW_ANECDOTE',
-    data: { anecdote },
+    data,
   };
 };
 
