@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { vote } from '../reducers/anecdoteReducer';
-import { removeMessage, setMessage } from '../reducers/notificationReducer';
+import { setMessage } from '../reducers/notificationReducer';
 
 const AnecdoteList = () => {
   const dispatch = useDispatch();
@@ -11,7 +11,7 @@ const AnecdoteList = () => {
   dispatch({ type: 'DEFAULT_SORTING' });
 
   const upVote = (votedAnecdote) => {
-    dispatch(vote(votedAnecdote.id));
+    dispatch(vote(votedAnecdote));
     dispatch(setMessage(`You've upvoted "${votedAnecdote.content}"`, 5000));
   };
 

@@ -24,10 +24,21 @@ const reducer = (state = [], action) => {
 };
 
 // 6.6: anecdotes, step4
-export const vote = (id) => {
-  return {
-    type: 'VOTE',
-    data: { id },
+// export const vote = (id) => {
+//   return {
+//     type: 'VOTE',
+//     data: { id },
+//   };
+// };
+
+export const vote = (votedAnecdote) => {
+  return async (dispatch) => {
+    const anecdote = { ...votedAnecdote, votes: votedAnecdote.votes + 1 };
+    const upVotedAnecdote = await anecdoteService.upVote(anecdote);
+    dispatch({
+      type: 'VOTE',
+      data: upVotedAnecdote,
+    });
   };
 };
 
