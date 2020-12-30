@@ -11,12 +11,14 @@ const reducer = (state = null, action) => {
 };
 
 export const setMessage = (message, timeout) => {
-  return {
-    type: 'SET_MESSAGE',
-    timeout: setTimeout(() => {
-      removeMessage();
-    }, timeout),
-    message,
+  return async (dispatch) => {
+    dispatch({
+      type: 'SET_MESSAGE',
+      message,
+    });
+    setTimeout(() => {
+      dispatch(removeMessage());
+    }, timeout);
   };
 };
 

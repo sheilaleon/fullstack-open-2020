@@ -16,6 +16,8 @@ const reducer = (state = [], action) => {
       return [...state, action.data];
     case 'INIT_ANECDOTES':
       return action.data;
+    case 'DEFAULT_SORTING':
+      return state.sort((a, b) => b.votes - a.votes);
     default:
       return state;
   }
@@ -29,19 +31,16 @@ export const vote = (id) => {
   };
 };
 
-export const createAnecdote = (data) => {
-  return {
-    type: 'NEW_ANECDOTE',
-    data,
+export const createAnecdote = (anecdote) => {
+  return async (dispatch) => {
+    const newAnecdote = await anecdoteService.createNew(anecdote);
+    console.log('data :>> ', newAnecdote);
+    dispatch({
+      type: 'NEW_ANECDOTE',
+      data: newAnecdote,
+    });
   };
 };
-
-// export const initialiseAnecdotes = (anecdotes) => {
-//   return {
-//     type: 'INIT_ANECDOTES',
-//     data: anecdotes,
-//   };
-// };
 
 export const initialiseAnecdotes = () => {
   return async (dispatch) => {
