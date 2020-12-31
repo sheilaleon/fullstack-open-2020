@@ -44,3 +44,10 @@ Course completion: ⏳ In Progress, part 5 completed...
 
 - [Blogs List Frontend](./part5/bloglist-frontend)
 - [Blogs List Application (Backend)](./part4/blog-list)
+
+### Part 6: [State management with Redux](https://fullstackopen.com/en/part6)
+
+🔍 [View Exercise Solutions 6.1-6.21](./part6)
+
+- [unicafe-redux](./part6/unicafe-redux)
+- [redux-anecdotes](./part6/redux-anecdotes)
