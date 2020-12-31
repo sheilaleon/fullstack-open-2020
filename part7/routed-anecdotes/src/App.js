@@ -4,7 +4,7 @@ import {
   Switch,
   Route,
   Link,
-  useParams,
+  useHistory,
 } from 'react-router-dom';
 
 const Menu = () => {
@@ -95,6 +95,7 @@ const CreateNew = (props) => {
   const [content, setContent] = useState('');
   const [author, setAuthor] = useState('');
   const [info, setInfo] = useState('');
+  const history = useHistory();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -104,6 +105,8 @@ const CreateNew = (props) => {
       info,
       votes: 0,
     });
+    props.setNotification(content);
+    history.push('/');
   };
 
   return (
@@ -188,6 +191,11 @@ const App = () => {
       <div>
         <h1>Software anecdotes</h1>
         <Menu />
+        {notification ? (
+          <p>
+            A new anedocte <strong>{notification}</strong> created!
+          </p>
+        ) : null}
       </div>
 
       <Switch>
@@ -195,7 +203,7 @@ const App = () => {
           <Anecdote anecdote={anecdote} />
         </Route>
         <Route path="/create">
-          <CreateNew addNew={addNew} />
+          <CreateNew addNew={addNew} setNotification={setNotification} />
         </Route>
         <Route path="/about">
           <About />
