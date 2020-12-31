@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useDispatch } from 'react-redux';
 
 import loginService from './services/login';
 import blogService from './services/blogs';
+
+import { setMessage } from './reducers/notificationReducer';
 
 import Login from './components/Login';
 import BlogItem from './components/BlogItem';
@@ -12,19 +15,12 @@ import Notification from './components/Notification';
 import './App.css';
 
 const App = () => {
+  const dispatch = useDispatch();
+
   const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
-  const [notification, setNotification] = useState(null);
-  const [notificationState, setNotificationState] = useState(null);
-
-  function displayNotification() {
-    setTimeout(() => {
-      setNotification(null);
-      setNotificationState(null);
-    }, 5000);
-  }
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -58,9 +54,7 @@ const App = () => {
       setPassword('');
     } catch (exception) {
       console.log('exception :>> ', exception);
-      setNotification(`Incorrect username or password`);
-      setNotificationState('error');
-      displayNotification();
+      dispatch(setMessage(`Incorrect username or password`, 'error', 5000));
     }
   };
 
@@ -76,16 +70,16 @@ const App = () => {
       .then((returnedBlog) => {
         setBlogs(blogs.concat(returnedBlog));
         blogFormRef.current.toggleVisibility();
-        setNotification(
-          `A new blog "${blogObject.title}" by ${blogObject.author} has been added.`,
+        dispatch(
+          setMessage(
+            `A new blog "${blogObject.title}" by ${blogObject.author} has been added.`,
+            'success',
+            5000,
+          ),
         );
-        setNotificationState('success');
-        displayNotification();
       })
       .catch((error) => {
-        setNotification(`${error.response.data.error}`);
-        setNotificationState('error');
-        displayNotification();
+        dispatch(setMessage(`${error.response.data.error}`, 'error', 5000));
       });
   };
 
@@ -107,10 +101,7 @@ const App = () => {
   return (
     <div className="container">
       <h1>{user === null ? `Login` : `Blogs`}</h1>
-      <Notification
-        notification={notification}
-        notificationState={notificationState}
-      />
+      <Notification />
       {user === null ? (
         <Login
           username={username}
