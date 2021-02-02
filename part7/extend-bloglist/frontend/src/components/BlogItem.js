@@ -23,7 +23,7 @@ const BlogItem = ({ blog, user, likeBlog, removeBlog }) => {
 
   const remove = (e) => {
     if (window.confirm(`Remove blog "${blog.title}" by ${blog.author}?`)) {
-      removeBlog(blog.id);
+      removeBlog(blog);
     }
   };
 

@@ -11,9 +11,6 @@ const reducer = (state = [], action) => {
         blog.id === action.data.id ? action.data : blog,
       );
     }
-    case 'REMOVE_BLOG': {
-      return action.data;
-    }
     default:
       return state;
   }
@@ -57,6 +54,24 @@ export const createBlog = (blogObject) => {
           'success',
           5000,
         ),
+      );
+    } catch (error) {
+      dispatch(setMessage(`${error.response.data.error}`, 'error', 5000));
+    }
+  };
+};
+
+export const removeBlog = (blog) => {
+  return async (dispatch) => {
+    try {
+      await blogService.remove(blog.id);
+      const request = await blogService.getAll();
+      dispatch({
+        type: 'INIT_BLOGS',
+        data: request,
+      });
+      dispatch(
+        setMessage(`Blog "${blog.title}" was deleted.`, 'success', 5000),
       );
     } catch (error) {
       dispatch(setMessage(`${error.response.data.error}`, 'error', 5000));

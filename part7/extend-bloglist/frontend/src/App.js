@@ -5,7 +5,12 @@ import loginService from './services/login';
 import blogService from './services/blogs';
 
 import { setMessage } from './reducers/notificationReducer';
-import { getBlogs, likeBlog, createBlog } from './reducers/blogsReducer';
+import {
+  getBlogs,
+  likeBlog,
+  createBlog,
+  removeBlog,
+} from './reducers/blogsReducer';
 
 import Login from './components/Login';
 import BlogItem from './components/BlogItem';
@@ -75,15 +80,13 @@ const App = () => {
     dispatch(createBlog(blogObject));
   };
 
+  const handleRemoveBlog = (id) => {
+    dispatch(removeBlog(id));
+  };
+
   const blogsSortedByLikes = blogs.sort(function (a, b) {
     return b.likes - a.likes;
   });
-
-  // const removeBlog = (id) => {
-  //   blogService.remove(id).then((returnedBlog) => {
-  //     setBlogs(blogs.filter((blog) => blog.id !== id));
-  //   });
-  // };
 
   return (
     <div className="container">
@@ -115,7 +118,7 @@ const App = () => {
                 blog={blog}
                 user={user}
                 likeBlog={handleLikeBlog}
-                // removeBlog={removeBlog}
+                removeBlog={handleRemoveBlog}
               />
             ))}
           </ul>
