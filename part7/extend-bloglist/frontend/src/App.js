@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import loginService from './services/login';
 import blogService from './services/blogs';
 
 import { setMessage } from './reducers/notificationReducer';
+import { getBlogs, likeBlog } from './reducers/blogsReducer';
 
 import Login from './components/Login';
 import BlogItem from './components/BlogItem';
@@ -13,18 +14,22 @@ import Toggle from './components/Toggle';
 import Notification from './components/Notification';
 
 import './App.css';
+import store from './configureStore';
 
 const App = () => {
   const dispatch = useDispatch();
 
-  const [blogs, setBlogs] = useState([]);
+  const blogs = useSelector((state) => state.blogs);
+
+  // const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
-  }, []);
+    // blogService.getAll().then((blogs) => setBlogs(blogs));
+    dispatch(getBlogs());
+  }, [dispatch]);
 
   // * Set User's token if logged in
   useEffect(() => {
@@ -64,39 +69,43 @@ const App = () => {
     setUser(null);
   };
 
-  const createBlog = (blogObject) => {
-    blogService
-      .create(blogObject)
-      .then((returnedBlog) => {
-        setBlogs(blogs.concat(returnedBlog));
-        blogFormRef.current.toggleVisibility();
-        dispatch(
-          setMessage(
-            `A new blog "${blogObject.title}" by ${blogObject.author} has been added.`,
-            'success',
-            5000,
-          ),
-        );
-      })
-      .catch((error) => {
-        dispatch(setMessage(`${error.response.data.error}`, 'error', 5000));
-      });
+  const handleLikeBlog = (id, blogObject) => {
+    dispatch(likeBlog(id, blogObject));
   };
 
-  const likeBlog = (id, blogObject) => {
-    blogService.update(id, blogObject).then((returnedBlog) => {
-      setBlogs(blogs.map((blog) => (blog.id !== id ? blog : returnedBlog)));
-    });
-  };
-  const blogsSortedByLikes = blogs.sort(function (a, b) {
-    return b.likes - a.likes;
-  });
+  // const createBlog = (blogObject) => {
+  //   blogService
+  //     .create(blogObject)
+  //     .then((returnedBlog) => {
+  //       setBlogs(blogs.concat(returnedBlog));
+  //       blogFormRef.current.toggleVisibility();
+  //       dispatch(
+  //         setMessage(
+  //           `A new blog "${blogObject.title}" by ${blogObject.author} has been added.`,
+  //           'success',
+  //           5000,
+  //         ),
+  //       );
+  //     })
+  //     .catch((error) => {
+  //       dispatch(setMessage(`${error.response.data.error}`, 'error', 5000));
+  //     });
+  // };
 
-  const removeBlog = (id) => {
-    blogService.remove(id).then((returnedBlog) => {
-      setBlogs(blogs.filter((blog) => blog.id !== id));
-    });
-  };
+  // const likeBlog = (id, blogObject) => {
+  //   blogService.update(id, blogObject).then((returnedBlog) => {
+  //     setBlogs(blogs.map((blog) => (blog.id !== id ? blog : returnedBlog)));
+  //   });
+  // };
+  // const blogsSortedByLikes = blogs.sort(function (a, b) {
+  //   return b.likes - a.likes;
+  // });
+
+  // const removeBlog = (id) => {
+  //   blogService.remove(id).then((returnedBlog) => {
+  //     setBlogs(blogs.filter((blog) => blog.id !== id));
+  //   });
+  // };
 
   return (
     <div className="container">
@@ -119,16 +128,16 @@ const App = () => {
             </button>
           </div>
           <Toggle buttonLabel={'Add New Blog'} ref={blogFormRef}>
-            <BlogForm createBlog={createBlog} />
+            {/* <BlogForm createBlog={createBlog} /> */}
           </Toggle>
           <ul>
-            {blogsSortedByLikes.map((blog) => (
+            {blogs.map((blog) => (
               <BlogItem
                 key={blog.id}
                 blog={blog}
                 user={user}
-                likeBlog={likeBlog}
-                removeBlog={removeBlog}
+                likeBlog={handleLikeBlog}
+                // removeBlog={removeBlog}
               />
             ))}
           </ul>
