@@ -5,7 +5,7 @@ import loginService from './services/login';
 import blogService from './services/blogs';
 
 import { setMessage } from './reducers/notificationReducer';
-import { getBlogs, likeBlog } from './reducers/blogsReducer';
+import { getBlogs, likeBlog, createBlog } from './reducers/blogsReducer';
 
 import Login from './components/Login';
 import BlogItem from './components/BlogItem';
@@ -14,20 +14,18 @@ import Toggle from './components/Toggle';
 import Notification from './components/Notification';
 
 import './App.css';
-import store from './configureStore';
+// import store from './configureStore';
 
 const App = () => {
   const dispatch = useDispatch();
 
   const blogs = useSelector((state) => state.blogs);
 
-  // const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // blogService.getAll().then((blogs) => setBlogs(blogs));
     dispatch(getBlogs());
   }, [dispatch]);
 
@@ -73,33 +71,13 @@ const App = () => {
     dispatch(likeBlog(id, blogObject));
   };
 
-  // const createBlog = (blogObject) => {
-  //   blogService
-  //     .create(blogObject)
-  //     .then((returnedBlog) => {
-  //       setBlogs(blogs.concat(returnedBlog));
-  //       blogFormRef.current.toggleVisibility();
-  //       dispatch(
-  //         setMessage(
-  //           `A new blog "${blogObject.title}" by ${blogObject.author} has been added.`,
-  //           'success',
-  //           5000,
-  //         ),
-  //       );
-  //     })
-  //     .catch((error) => {
-  //       dispatch(setMessage(`${error.response.data.error}`, 'error', 5000));
-  //     });
-  // };
+  const handleCreateBlog = (blogObject) => {
+    dispatch(createBlog(blogObject));
+  };
 
-  // const likeBlog = (id, blogObject) => {
-  //   blogService.update(id, blogObject).then((returnedBlog) => {
-  //     setBlogs(blogs.map((blog) => (blog.id !== id ? blog : returnedBlog)));
-  //   });
-  // };
-  // const blogsSortedByLikes = blogs.sort(function (a, b) {
-  //   return b.likes - a.likes;
-  // });
+  const blogsSortedByLikes = blogs.sort(function (a, b) {
+    return b.likes - a.likes;
+  });
 
   // const removeBlog = (id) => {
   //   blogService.remove(id).then((returnedBlog) => {
@@ -128,10 +106,10 @@ const App = () => {
             </button>
           </div>
           <Toggle buttonLabel={'Add New Blog'} ref={blogFormRef}>
-            {/* <BlogForm createBlog={createBlog} /> */}
+            <BlogForm createBlog={handleCreateBlog} />
           </Toggle>
           <ul>
-            {blogs.map((blog) => (
+            {blogsSortedByLikes.map((blog) => (
               <BlogItem
                 key={blog.id}
                 blog={blog}

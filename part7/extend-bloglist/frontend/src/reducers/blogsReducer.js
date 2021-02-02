@@ -28,7 +28,7 @@ export const getBlogs = (blogs) => {
         data: request,
       });
     } catch (error) {
-      dispatch(setMessage(error.request.data.error, 'error', 500));
+      dispatch(setMessage(`${error.response.data.error}`, 'error', 5000));
     }
   };
 };
@@ -37,13 +37,29 @@ export const likeBlog = (id, blogObject) => {
   return async (dispatch) => {
     try {
       const request = await blogService.update(id, blogObject);
-      console.log('request :>> ', request);
       dispatch({
         type: 'LIKE_BLOG',
         data: request,
       });
     } catch (error) {
-      dispatch(setMessage(error.request.data.error, 'error', 500));
+      dispatch(setMessage(`${error.response.data.error}`, 'error', 5000));
+    }
+  };
+};
+
+export const createBlog = (blogObject) => {
+  return async (dispatch) => {
+    try {
+      const request = await blogService.create(blogObject);
+      dispatch(
+        setMessage(
+          `A new blog "${request.title}" by ${request.author} has been added.`,
+          'success',
+          5000,
+        ),
+      );
+    } catch (error) {
+      dispatch(setMessage(`${error.response.data.error}`, 'error', 5000));
     }
   };
 };
