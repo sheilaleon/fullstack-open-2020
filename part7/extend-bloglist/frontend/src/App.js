@@ -1,16 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import loginService from './services/login';
-import blogService from './services/blogs';
-
-import { setMessage } from './reducers/notificationReducer';
 import {
   getBlogs,
   likeBlog,
   createBlog,
   removeBlog,
 } from './reducers/blogsReducer';
+import { login, logout } from './reducers/userReducer';
 
 import Login from './components/Login';
 import BlogItem from './components/BlogItem';
@@ -19,57 +16,33 @@ import Toggle from './components/Toggle';
 import Notification from './components/Notification';
 
 import './App.css';
-// import store from './configureStore';
 
 const App = () => {
   const dispatch = useDispatch();
 
   const blogs = useSelector((state) => state.blogs);
+  const user = useSelector((state) => state.user);
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [user, setUser] = useState(null);
 
   useEffect(() => {
     dispatch(getBlogs());
   }, [dispatch]);
-
-  // * Set User's token if logged in
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('user');
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON);
-      setUser(user);
-      blogService.setToken(user.token);
-    }
-  }, []);
 
   const blogFormRef = useRef();
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    try {
-      const user = await loginService.login({
-        username,
-        password,
-      });
+    dispatch(login(username, password));
 
-      window.localStorage.setItem('user', JSON.stringify(user));
-
-      setUser(user);
-      setUsername('');
-      setPassword('');
-    } catch (exception) {
-      console.log('exception :>> ', exception);
-      dispatch(setMessage(`Incorrect username or password`, 'error', 5000));
-    }
+    setUsername('');
+    setPassword('');
   };
 
-  const handleLogout = (e) => {
-    e.preventDefault();
-    window.localStorage.removeItem('user');
-    setUser(null);
+  const handleLogout = () => {
+    dispatch(logout());
   };
 
   const handleLikeBlog = (id, blogObject) => {
@@ -84,15 +57,11 @@ const App = () => {
     dispatch(removeBlog(id));
   };
 
-  const blogsSortedByLikes = blogs.sort(function (a, b) {
-    return b.likes - a.likes;
-  });
-
   return (
     <div className="container">
-      <h1>{user === null ? `Login` : `Blogs`}</h1>
+      <h1>{user.name === undefined ? `Login` : `Blogs`}</h1>
       <Notification />
-      {user === null ? (
+      {user.name === undefined ? (
         <Login
           username={username}
           setUsername={setUsername}
@@ -112,11 +81,11 @@ const App = () => {
             <BlogForm createBlog={handleCreateBlog} />
           </Toggle>
           <ul>
-            {blogsSortedByLikes.map((blog) => (
+            {blogs.map((blog) => (
               <BlogItem
                 key={blog.id}
                 blog={blog}
-                user={user}
+                user={user.username}
                 likeBlog={handleLikeBlog}
                 removeBlog={handleRemoveBlog}
               />

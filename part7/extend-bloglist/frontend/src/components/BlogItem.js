@@ -59,7 +59,7 @@ const BlogItem = ({ blog, user, likeBlog, removeBlog }) => {
             <span>Saved by {blog.user.name}</span>
           </div>
           <div>
-            {blog.user.username === user.username ? (
+            {blog.user.username === user ? (
               <button
                 className="btn-sm secondary"
                 style={{ display: 'block' }}
