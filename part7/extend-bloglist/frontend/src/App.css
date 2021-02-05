@@ -147,3 +147,8 @@ button.secondary:hover {
   box-shadow: none;
   color: #fff;
 }
+
+td {
+  min-width: 120px;
+  padding: 0.4rem 0;
+}

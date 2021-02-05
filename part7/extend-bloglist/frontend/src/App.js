@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import {
+  useRouteMatch,
+  Switch,
+  Route,
+  Link,
+  useHistory,
+} from 'react-router-dom';
 
 import {
   getBlogs,
@@ -10,7 +17,8 @@ import {
 import { login, logout } from './reducers/userReducer';
 
 import Login from './components/Login';
-import BlogItem from './components/BlogItem';
+import BlogList from './components/BlogList';
+import Users from './components/Users';
 import BlogForm from './components/BlogForm';
 import Toggle from './components/Toggle';
 import Notification from './components/Notification';
@@ -80,17 +88,20 @@ const App = () => {
           <Toggle buttonLabel={'Add New Blog'} ref={blogFormRef}>
             <BlogForm createBlog={handleCreateBlog} />
           </Toggle>
-          <ul>
-            {blogs.map((blog) => (
-              <BlogItem
-                key={blog.id}
-                blog={blog}
-                user={user.username}
-                likeBlog={handleLikeBlog}
-                removeBlog={handleRemoveBlog}
+
+          <Switch>
+            <Route path="/users">
+              <Users />
+            </Route>
+            <Route path="/">
+              <BlogList
+                blogs={blogs}
+                user={user}
+                handleLikeBlog={handleLikeBlog}
+                handleRemoveBlog={handleRemoveBlog}
               />
-            ))}
-          </ul>
+            </Route>
+          </Switch>
         </>
       )}
     </div>
