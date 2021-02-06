@@ -19,9 +19,10 @@ import { getUsers } from './reducers/usersReducer';
 
 import Login from './components/Login';
 import BlogList from './components/BlogList';
+import BlogForm from './components/BlogForm';
+import BlogDetails from './components/BlogDetails';
 import Users from './components/Users';
 import UserDetails from './components/UserDetails';
-import BlogForm from './components/BlogForm';
 import Toggle from './components/Toggle';
 import Notification from './components/Notification';
 
@@ -69,8 +70,15 @@ const App = () => {
     dispatch(removeBlog(id));
   };
 
-  const match = useRouteMatch('/users/:id');
-  const user = match ? users.find((user) => user.id === match.params.id) : null;
+  const matchUser = useRouteMatch('/users/:id');
+  const user = matchUser
+    ? users.find((user) => user.id === matchUser.params.id)
+    : null;
+
+  const matchBlog = useRouteMatch('/blogs/:id');
+  const blog = matchBlog
+    ? blogs.find((blog) => blog.id === matchBlog.params.id)
+    : null;
 
   return (
     <div className="container">
@@ -94,6 +102,14 @@ const App = () => {
           </div>
 
           <Switch>
+            <Route path="/blogs/:id">
+              <BlogDetails
+                blog={blog}
+                user={loggedInUser}
+                likeBlog={handleLikeBlog}
+                handleRemoveBlog={handleRemoveBlog}
+              />
+            </Route>
             <Route path="/users/:id">
               <UserDetails user={user} />
             </Route>
@@ -104,12 +120,7 @@ const App = () => {
               <Toggle buttonLabel={'Add New Blog'} ref={blogFormRef}>
                 <BlogForm createBlog={handleCreateBlog} />
               </Toggle>
-              <BlogList
-                blogs={blogs}
-                user={loggedInUser}
-                handleLikeBlog={handleLikeBlog}
-                handleRemoveBlog={handleRemoveBlog}
-              />
+              <BlogList blogs={blogs} handleLikeBlog={handleLikeBlog} />
             </Route>
           </Switch>
         </>
