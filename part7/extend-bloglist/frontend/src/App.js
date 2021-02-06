@@ -1,12 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  Switch,
-  Route,
-  Link,
-  useHistory,
-  useRouteMatch,
-} from 'react-router-dom';
+import { Switch, Route, useRouteMatch } from 'react-router-dom';
 
 import {
   getBlogs,
