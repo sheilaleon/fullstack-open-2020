@@ -18,6 +18,7 @@ import { login, logout } from './reducers/userReducer';
 import { getUsers } from './reducers/usersReducer';
 
 import Login from './components/Login';
+import Nav from './components/Nav';
 import BlogList from './components/BlogList';
 import BlogForm from './components/BlogForm';
 import BlogDetails from './components/BlogDetails';
@@ -81,51 +82,56 @@ const App = () => {
     : null;
 
   return (
-    <div className="container">
-      <h1>{loggedInUser.name === undefined ? `Login` : `Blogs`}</h1>
-      <Notification />
-      {loggedInUser.name === undefined ? (
-        <Login
-          username={username}
-          setUsername={setUsername}
-          password={password}
-          setPassword={setPassword}
-          handleLogin={handleLogin}
-        />
-      ) : (
-        <>
-          <div className="user-actions">
-            <p>{loggedInUser.name} logged in.</p>
-            <button className="btn-sm secondary" onClick={handleLogout}>
-              Log out
-            </button>
-          </div>
-
-          <Switch>
-            <Route path="/blogs/:id">
-              <BlogDetails
-                blog={blog}
-                user={loggedInUser}
-                likeBlog={handleLikeBlog}
-                handleRemoveBlog={handleRemoveBlog}
-              />
-            </Route>
-            <Route path="/users/:id">
-              <UserDetails user={user} />
-            </Route>
-            <Route path="/users">
-              <Users users={users} />
-            </Route>
-            <Route path="/">
-              <Toggle buttonLabel={'Add New Blog'} ref={blogFormRef}>
-                <BlogForm createBlog={handleCreateBlog} />
-              </Toggle>
-              <BlogList blogs={blogs} handleLikeBlog={handleLikeBlog} />
-            </Route>
-          </Switch>
-        </>
+    <>
+      {loggedInUser.name === undefined ? null : (
+        <Nav loggedInUser={loggedInUser} logout={handleLogout} />
       )}
-    </div>
+      <div className="container">
+        <h1>{loggedInUser.name === undefined ? `Login` : `Blogs`}</h1>
+        <Notification />
+        {loggedInUser.name === undefined ? (
+          <Login
+            username={username}
+            setUsername={setUsername}
+            password={password}
+            setPassword={setPassword}
+            handleLogin={handleLogin}
+          />
+        ) : (
+          <>
+            {/* <div className="user-actions">
+    <p>{loggedInUser.name} logged in.</p>
+    <button className="btn-sm secondary" onClick={handleLogout}>
+    Log out
+    </button>
+    </div> */}
+
+            <Switch>
+              <Route path="/blogs/:id">
+                <BlogDetails
+                  blog={blog}
+                  user={loggedInUser}
+                  likeBlog={handleLikeBlog}
+                  handleRemoveBlog={handleRemoveBlog}
+                />
+              </Route>
+              <Route path="/users/:id">
+                <UserDetails user={user} />
+              </Route>
+              <Route path="/users">
+                <Users users={users} />
+              </Route>
+              <Route path="/">
+                <Toggle buttonLabel={'Add New Blog'} ref={blogFormRef}>
+                  <BlogForm createBlog={handleCreateBlog} />
+                </Toggle>
+                <BlogList blogs={blogs} handleLikeBlog={handleLikeBlog} />
+              </Route>
+            </Switch>
+          </>
+        )}
+      </div>
+    </>
   );
 };
 
