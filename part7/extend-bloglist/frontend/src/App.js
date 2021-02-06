@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  useRouteMatch,
   Switch,
   Route,
   Link,
   useHistory,
+  useRouteMatch,
 } from 'react-router-dom';
 
 import {
@@ -15,10 +15,12 @@ import {
   removeBlog,
 } from './reducers/blogsReducer';
 import { login, logout } from './reducers/userReducer';
+import { getUsers } from './reducers/usersReducer';
 
 import Login from './components/Login';
 import BlogList from './components/BlogList';
 import Users from './components/Users';
+import UserDetails from './components/UserDetails';
 import BlogForm from './components/BlogForm';
 import Toggle from './components/Toggle';
 import Notification from './components/Notification';
@@ -29,13 +31,15 @@ const App = () => {
   const dispatch = useDispatch();
 
   const blogs = useSelector((state) => state.blogs);
-  const user = useSelector((state) => state.user);
+  const loggedInUser = useSelector((state) => state.loggedInUser);
+  const users = useSelector((state) => state.users);
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   useEffect(() => {
     dispatch(getBlogs());
+    dispatch(getUsers());
   }, [dispatch]);
 
   const blogFormRef = useRef();
@@ -65,11 +69,14 @@ const App = () => {
     dispatch(removeBlog(id));
   };
 
+  const match = useRouteMatch('/users/:id');
+  const user = match ? users.find((user) => user.id === match.params.id) : null;
+
   return (
     <div className="container">
-      <h1>{user.name === undefined ? `Login` : `Blogs`}</h1>
+      <h1>{loggedInUser.name === undefined ? `Login` : `Blogs`}</h1>
       <Notification />
-      {user.name === undefined ? (
+      {loggedInUser.name === undefined ? (
         <Login
           username={username}
           setUsername={setUsername}
@@ -80,23 +87,26 @@ const App = () => {
       ) : (
         <>
           <div className="user-actions">
-            <p>{user.name} logged in.</p>
+            <p>{loggedInUser.name} logged in.</p>
             <button className="btn-sm secondary" onClick={handleLogout}>
               Log out
             </button>
           </div>
-          <Toggle buttonLabel={'Add New Blog'} ref={blogFormRef}>
-            <BlogForm createBlog={handleCreateBlog} />
-          </Toggle>
 
           <Switch>
+            <Route path="/users/:id">
+              <UserDetails user={user} />
+            </Route>
             <Route path="/users">
-              <Users />
+              <Users users={users} />
             </Route>
             <Route path="/">
+              <Toggle buttonLabel={'Add New Blog'} ref={blogFormRef}>
+                <BlogForm createBlog={handleCreateBlog} />
+              </Toggle>
               <BlogList
                 blogs={blogs}
-                user={user}
+                user={loggedInUser}
                 handleLikeBlog={handleLikeBlog}
                 handleRemoveBlog={handleRemoveBlog}
               />

@@ -198,6 +198,7 @@ const App = () => {
   const anecdote = match
     ? anecdotes.find((anecdote) => anecdote.id === match.params.id)
     : null;
+  console.log('anecdote :>> ', anecdote);
 
   return (
     <>
