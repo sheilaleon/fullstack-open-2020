@@ -5,6 +5,8 @@ const BlogDetails = ({ blog, user, likeBlog, removeBlog }) => {
     return null;
   }
 
+  console.log('comments :>> ', blog.comments);
+
   const like = () => {
     const { id, title, author, url, user } = blog;
     const blogObject = {
@@ -63,6 +65,16 @@ const BlogDetails = ({ blog, user, likeBlog, removeBlog }) => {
             </button>
           ) : null}
         </div>
+        {blog.comments !== undefined ? (
+          <div>
+            <h3>Comments</h3>
+            <ul>
+              {blog.comments.map((comment) => (
+                <li key={comment.id}>{comment.comment}</li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
       </div>
     </div>
   );

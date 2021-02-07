@@ -40,6 +40,16 @@ const App = () => {
 
   const blogFormRef = useRef();
 
+  const matchUser = useRouteMatch('/users/:id');
+  const user = matchUser
+    ? users.find((user) => user.id === matchUser.params.id)
+    : null;
+
+  const matchBlog = useRouteMatch('/blogs/:id');
+  const blog = matchBlog
+    ? blogs.find((blog) => blog.id === matchBlog.params.id)
+    : null;
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -65,16 +75,6 @@ const App = () => {
     dispatch(removeBlog(id));
   };
 
-  const matchUser = useRouteMatch('/users/:id');
-  const user = matchUser
-    ? users.find((user) => user.id === matchUser.params.id)
-    : null;
-
-  const matchBlog = useRouteMatch('/blogs/:id');
-  const blog = matchBlog
-    ? blogs.find((blog) => blog.id === matchBlog.params.id)
-    : null;
-
   return (
     <>
       {loggedInUser.name === undefined ? null : (
@@ -92,37 +92,28 @@ const App = () => {
             handleLogin={handleLogin}
           />
         ) : (
-          <>
-            {/* <div className="user-actions">
-    <p>{loggedInUser.name} logged in.</p>
-    <button className="btn-sm secondary" onClick={handleLogout}>
-    Log out
-    </button>
-    </div> */}
-
-            <Switch>
-              <Route path="/blogs/:id">
-                <BlogDetails
-                  blog={blog}
-                  user={loggedInUser}
-                  likeBlog={handleLikeBlog}
-                  handleRemoveBlog={handleRemoveBlog}
-                />
-              </Route>
-              <Route path="/users/:id">
-                <UserDetails user={user} />
-              </Route>
-              <Route path="/users">
-                <Users users={users} />
-              </Route>
-              <Route path="/">
-                <Toggle buttonLabel={'Add New Blog'} ref={blogFormRef}>
-                  <BlogForm createBlog={handleCreateBlog} />
-                </Toggle>
-                <BlogList blogs={blogs} handleLikeBlog={handleLikeBlog} />
-              </Route>
-            </Switch>
-          </>
+          <Switch>
+            <Route path="/blogs/:id">
+              <BlogDetails
+                blog={blog}
+                user={loggedInUser}
+                likeBlog={handleLikeBlog}
+                handleRemoveBlog={handleRemoveBlog}
+              />
+            </Route>
+            <Route path="/users/:id">
+              <UserDetails user={user} />
+            </Route>
+            <Route path="/users">
+              <Users users={users} />
+            </Route>
+            <Route path="/">
+              <Toggle buttonLabel={'Add New Blog'} ref={blogFormRef}>
+                <BlogForm createBlog={handleCreateBlog} />
+              </Toggle>
+              <BlogList blogs={blogs} handleLikeBlog={handleLikeBlog} />
+            </Route>
+          </Switch>
         )}
       </div>
     </>
