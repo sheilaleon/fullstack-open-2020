@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Switch, Route, useRouteMatch } from 'react-router-dom';
+import { Switch, Route, useHistory, useRouteMatch } from 'react-router-dom';
 
 import {
   getBlogs,
   likeBlog,
+  addComment,
   createBlog,
   removeBlog,
 } from './reducers/blogsReducer';
@@ -39,6 +40,7 @@ const App = () => {
   }, [dispatch]);
 
   const blogFormRef = useRef();
+  const history = useHistory();
 
   const matchUser = useRouteMatch('/users/:id');
   const user = matchUser
@@ -72,7 +74,12 @@ const App = () => {
   };
 
   const handleRemoveBlog = (id) => {
+    history.push('/');
     dispatch(removeBlog(id));
+  };
+
+  const handleAddComment = (id, commentObject) => {
+    dispatch(addComment(id, commentObject));
   };
 
   return (
@@ -97,7 +104,8 @@ const App = () => {
               <BlogDetails
                 blog={blog}
                 user={loggedInUser}
-                likeBlog={handleLikeBlog}
+                addComment={handleAddComment}
+                handleLikeBlog={handleLikeBlog}
                 handleRemoveBlog={handleRemoveBlog}
               />
             </Route>

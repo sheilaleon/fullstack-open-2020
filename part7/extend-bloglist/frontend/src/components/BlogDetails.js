@@ -1,11 +1,17 @@
 import React from 'react';
 
-const BlogDetails = ({ blog, user, likeBlog, removeBlog }) => {
+import CommentForm from './CommentForm';
+
+const BlogDetails = ({
+  blog,
+  user,
+  addComment,
+  handleLikeBlog,
+  handleRemoveBlog,
+}) => {
   if (!blog) {
     return null;
   }
-
-  console.log('comments :>> ', blog.comments);
 
   const like = () => {
     const { id, title, author, url, user } = blog;
@@ -16,12 +22,12 @@ const BlogDetails = ({ blog, user, likeBlog, removeBlog }) => {
       author,
       url,
     };
-    likeBlog(id, blogObject);
+    handleLikeBlog(id, blogObject);
   };
 
   const remove = (e) => {
     if (window.confirm(`Remove blog "${blog.title}" by ${blog.author}?`)) {
-      removeBlog(blog);
+      handleRemoveBlog(blog);
     }
   };
 
@@ -54,7 +60,7 @@ const BlogDetails = ({ blog, user, likeBlog, removeBlog }) => {
           <span>Saved by {blog.user.name}</span>
         </div>
         <div>
-          {blog.user.username === user ? (
+          {blog.user.username === user.username ? (
             <button
               className="btn-sm secondary"
               style={{ display: 'block' }}
@@ -65,16 +71,17 @@ const BlogDetails = ({ blog, user, likeBlog, removeBlog }) => {
             </button>
           ) : null}
         </div>
-        {blog.comments !== undefined ? (
-          <div>
-            <h3>Comments</h3>
+        <div>
+          <h3>Comments</h3>
+          <CommentForm addComment={addComment} id={blog.id} />
+          {blog.comments !== undefined ? (
             <ul>
               {blog.comments.map((comment) => (
                 <li key={comment.id}>{comment.comment}</li>
               ))}
             </ul>
-          </div>
-        ) : null}
+          ) : null}
+        </div>
       </div>
     </div>
   );

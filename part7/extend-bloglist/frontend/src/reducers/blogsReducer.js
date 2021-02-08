@@ -13,19 +13,39 @@ const reducer = (state = [], action) => {
       return action.data;
     }
     case 'LIKE_BLOG': {
+      const findBlogToUpdate = state.find((blog) => blog.id === action.data.id);
+      const updatedBlog = {
+        ...findBlogToUpdate,
+        likes: findBlogToUpdate.likes + 1,
+      };
+
       return state.map((blog) =>
-        blog.id === action.data.id ? action.data : blog,
+        blog.id === action.data.id ? updatedBlog : blog,
       );
     }
     case 'ADD_BLOG': {
       return [...state, action.data];
+    }
+    case 'ADD_COMMENT': {
+      const findBlogToUpdate = state.find(
+        (blog) => blog.id === action.data.blog[0],
+      );
+      const comment = { comment: action.data.comment, id: action.data.id };
+      const updatedBlog = {
+        ...findBlogToUpdate,
+        comments: [...findBlogToUpdate.comments, comment],
+      };
+
+      return state.map((blog) =>
+        blog.id === action.data.blog[0] ? updatedBlog : blog,
+      );
     }
     default:
       return state;
   }
 };
 
-export const getBlogs = (blogs) => {
+export const getBlogs = () => {
   return async (dispatch) => {
     try {
       const request = await blogService.getAll();
@@ -60,7 +80,6 @@ export const createBlog = (blogObject) => {
   return async (dispatch) => {
     try {
       const request = await blogService.create(blogObject);
-      console.log('request :>> ', request);
       dispatch({
         type: 'ADD_BLOG',
         data: request,
@@ -90,6 +109,20 @@ export const removeBlog = (blog) => {
       dispatch(
         setMessage(`Blog "${blog.title}" was deleted.`, 'success', 5000),
       );
+    } catch (error) {
+      dispatch(setMessage(`${error.response.data.error}`, 'error', 5000));
+    }
+  };
+};
+
+export const addComment = (blogId, commentObject) => {
+  return async (dispatch) => {
+    try {
+      const request = await blogService.addComment(blogId, commentObject);
+      dispatch({
+        type: 'ADD_COMMENT',
+        data: request,
+      });
     } catch (error) {
       dispatch(setMessage(`${error.response.data.error}`, 'error', 5000));
     }
