@@ -1,14 +1,16 @@
 import React from 'react';
 
+import ListGroup from 'react-bootstrap/ListGroup';
+
 import BlogItem from './BlogItem';
 
 const BlogList = ({ blogs }) => {
   return (
-    <ul>
+    <ListGroup className="pt-4">
       {blogs.map((blog) => (
         <BlogItem key={blog.id} blog={blog} />
       ))}
-    </ul>
+    </ListGroup>
   );
 };
 

@@ -57,7 +57,7 @@ export const getBlogs = () => {
         data: blogsSortedByLikes,
       });
     } catch (error) {
-      dispatch(setMessage(`${error.response.data.error}`, 'error', 5000));
+      dispatch(setMessage(`${error.response.data.error}`, 'danger', 5000));
     }
   };
 };
@@ -71,7 +71,7 @@ export const likeBlog = (id, blogObject) => {
         data: request,
       });
     } catch (error) {
-      dispatch(setMessage(`${error.response.data.error}`, 'error', 5000));
+      dispatch(setMessage(`${error.response.data.error}`, 'danger', 5000));
     }
   };
 };
@@ -92,7 +92,7 @@ export const createBlog = (blogObject) => {
         ),
       );
     } catch (error) {
-      dispatch(setMessage(`${error.response.data.error}`, 'error', 5000));
+      dispatch(setMessage(`${error.response.data.error}`, 'danger', 5000));
     }
   };
 };
@@ -110,7 +110,7 @@ export const removeBlog = (blog) => {
         setMessage(`Blog "${blog.title}" was deleted.`, 'success', 5000),
       );
     } catch (error) {
-      dispatch(setMessage(`${error.response.data.error}`, 'error', 5000));
+      dispatch(setMessage(`${error.response.data.error}`, 'danger', 5000));
     }
   };
 };
@@ -124,7 +124,7 @@ export const addComment = (blogId, commentObject) => {
         data: request,
       });
     } catch (error) {
-      dispatch(setMessage(`${error.response.data.error}`, 'error', 5000));
+      dispatch(setMessage(`${error.response.data.error}`, 'danger', 5000));
     }
   };
 };

@@ -13,7 +13,7 @@ import { login, logout } from './reducers/userReducer';
 import { getUsers } from './reducers/usersReducer';
 
 import Login from './components/Login';
-import Nav from './components/Nav';
+import Navbar from './components/Navbar';
 import BlogList from './components/BlogList';
 import BlogForm from './components/BlogForm';
 import BlogDetails from './components/BlogDetails';
@@ -22,7 +22,9 @@ import UserDetails from './components/UserDetails';
 import Toggle from './components/Toggle';
 import Notification from './components/Notification';
 
-import './App.css';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -85,45 +87,51 @@ const App = () => {
   return (
     <>
       {loggedInUser.name === undefined ? null : (
-        <Nav loggedInUser={loggedInUser} logout={handleLogout} />
+        <Navbar loggedInUser={loggedInUser} logout={handleLogout} />
       )}
-      <div className="container">
-        <h1>{loggedInUser.name === undefined ? `Login` : `Blogs`}</h1>
-        <Notification />
-        {loggedInUser.name === undefined ? (
-          <Login
-            username={username}
-            setUsername={setUsername}
-            password={password}
-            setPassword={setPassword}
-            handleLogin={handleLogin}
-          />
-        ) : (
-          <Switch>
-            <Route path="/blogs/:id">
-              <BlogDetails
-                blog={blog}
-                user={loggedInUser}
-                addComment={handleAddComment}
-                handleLikeBlog={handleLikeBlog}
-                handleRemoveBlog={handleRemoveBlog}
+      <Container className="mt-5">
+        <Row>
+          <Col sm={6}>
+            <h1 className="pb-3">
+              {loggedInUser.name === undefined ? `Login` : `Blogs`}
+            </h1>
+            <Notification />
+            {loggedInUser.name === undefined ? (
+              <Login
+                username={username}
+                setUsername={setUsername}
+                password={password}
+                setPassword={setPassword}
+                handleLogin={handleLogin}
               />
-            </Route>
-            <Route path="/users/:id">
-              <UserDetails user={user} />
-            </Route>
-            <Route path="/users">
-              <Users users={users} />
-            </Route>
-            <Route path="/">
-              <Toggle buttonLabel={'Add New Blog'} ref={blogFormRef}>
-                <BlogForm createBlog={handleCreateBlog} />
-              </Toggle>
-              <BlogList blogs={blogs} handleLikeBlog={handleLikeBlog} />
-            </Route>
-          </Switch>
-        )}
-      </div>
+            ) : (
+              <Switch>
+                <Route path="/blogs/:id">
+                  <BlogDetails
+                    blog={blog}
+                    user={loggedInUser}
+                    addComment={handleAddComment}
+                    handleLikeBlog={handleLikeBlog}
+                    handleRemoveBlog={handleRemoveBlog}
+                  />
+                </Route>
+                <Route path="/users/:id">
+                  <UserDetails user={user} />
+                </Route>
+                <Route path="/users">
+                  <Users users={users} />
+                </Route>
+                <Route path="/">
+                  <Toggle buttonLabel={'Add New Blog'} ref={blogFormRef}>
+                    <BlogForm createBlog={handleCreateBlog} />
+                  </Toggle>
+                  <BlogList blogs={blogs} handleLikeBlog={handleLikeBlog} />
+                </Route>
+              </Switch>
+            )}
+          </Col>
+        </Row>
+      </Container>
     </>
   );
 };

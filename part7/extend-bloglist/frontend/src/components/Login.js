@@ -1,5 +1,9 @@
 import React from 'react';
 
+import Button from 'react-bootstrap/Button';
+import Row from 'react-bootstrap/Row';
+import Form from 'react-bootstrap/Form';
+
 const Login = ({
   username,
   setUsername,
@@ -9,31 +13,38 @@ const Login = ({
 }) => {
   return (
     <>
-      <form onSubmit={handleLogin}>
-        <div className="form-field-container">
-          <label htmlFor="username">Username</label>
-          <input
+      <Form onSubmit={handleLogin}>
+        <Form.Group controlId="formBasicEmail">
+          <Form.Label>Username</Form.Label>
+          <Form.Control
             name="username"
-            value={username}
             type="text"
+            value={username}
+            placeholder="Enter username"
             data-cy="login-username"
             onChange={({ target }) => setUsername(target.value)}
           />
-        </div>
-        <div className="form-field-container">
-          <label htmlFor="password">Password</label>
-          <input
+        </Form.Group>
+        <Form.Group controlId="formBasicPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
             name="password"
-            value={password}
             type="password"
+            value={password}
+            placeholder="Password"
             data-cy="login-password"
             onChange={({ target }) => setPassword(target.value)}
           />
-        </div>
-        <button type="submit" data-cy="login-submit" onClick={handleLogin}>
-          Login
-        </button>
-      </form>
+        </Form.Group>
+        <Button
+          variant="primary"
+          type="submit"
+          data-cy="login-submit"
+          onClick={handleLogin}
+        >
+          Submit
+        </Button>
+      </Form>
     </>
   );
 };

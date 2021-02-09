@@ -1,5 +1,8 @@
 import React from 'react';
 
+import Button from 'react-bootstrap/Button';
+import ListGroup from 'react-bootstrap/ListGroup';
+
 import CommentForm from './CommentForm';
 
 const BlogDetails = ({
@@ -48,38 +51,36 @@ const BlogDetails = ({
             <strong>{blog.likes} </strong>
             {blog.likes === 1 ? 'Like' : 'Likes'}
           </span>
-          <button
-            className="btn-sm secondary"
-            data-cy="blog-like"
-            onClick={like}
-          >
+          <Button size="sm" data-cy="blog-like" onClick={like}>
             Like
-          </button>
+          </Button>
         </div>
         <div>
           <span>Saved by {blog.user.name}</span>
         </div>
         <div>
           {blog.user.username === user.username ? (
-            <button
-              className="btn-sm secondary"
-              style={{ display: 'block' }}
+            <Button
+              variant="outline-danger"
+              size="sm"
               onClick={remove}
               data-cy="blog-delete"
             >
               Remove
-            </button>
+            </Button>
           ) : null}
         </div>
         <div>
           <h3>Comments</h3>
           <CommentForm addComment={addComment} id={blog.id} />
           {blog.comments !== undefined ? (
-            <ul>
+            <ListGroup variant="flush">
               {blog.comments.map((comment) => (
-                <li key={comment.id}>{comment.comment}</li>
+                <ListGroup.Item key={comment.id}>
+                  {comment.comment}
+                </ListGroup.Item>
               ))}
-            </ul>
+            </ListGroup>
           ) : null}
         </div>
       </div>

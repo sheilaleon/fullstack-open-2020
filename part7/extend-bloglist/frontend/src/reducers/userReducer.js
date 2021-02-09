@@ -34,7 +34,7 @@ export const login = (username, password) => {
         data: request,
       });
     } catch {
-      dispatch(setMessage(`Incorrect username or password`, 'error', 5000));
+      dispatch(setMessage(`Incorrect username or password`, 'danger', 5000));
     }
   };
 };

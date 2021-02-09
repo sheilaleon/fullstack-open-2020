@@ -1,6 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
+import Alert from 'react-bootstrap/Alert';
+import Row from 'react-bootstrap/Row';
+
 const Notification = () => {
   const notification = useSelector((state) => state.notifications);
 
@@ -8,11 +11,11 @@ const Notification = () => {
     return null;
   } else {
     return (
-      <div className={`notification ${notification.notificationType}`}>
-        <div>
-          <p>{notification.message}</p>
-        </div>
-      </div>
+      <>
+        <Alert variant={`${notification.notificationType}`}>
+          {notification.message}
+        </Alert>
+      </>
     );
   }
 };

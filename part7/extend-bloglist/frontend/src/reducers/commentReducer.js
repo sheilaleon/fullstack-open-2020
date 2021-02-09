@@ -20,7 +20,7 @@ export const getComments = () => {
         data: request,
       });
     } catch (error) {
-      dispatch(setMessage(`${error.response.data.error}`, 'error', 5000));
+      dispatch(setMessage(`${error.response.data.error}`, 'danger', 5000));
     }
   };
 };

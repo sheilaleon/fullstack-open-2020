@@ -1,11 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import Table from 'react-bootstrap/Table';
+
 const Users = ({ users }) => {
   return (
     <div>
       <h2>Users</h2>
-      <table>
+      <Table>
         <thead>
           <tr>
             <th style={{ textAlign: 'left' }}>Users</th>
@@ -22,7 +24,7 @@ const Users = ({ users }) => {
             </tr>
           ))}
         </tbody>
-      </table>
+      </Table>
     </div>
   );
 };

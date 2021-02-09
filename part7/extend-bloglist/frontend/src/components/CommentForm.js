@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+
 const CommentForm = ({ id, addComment }) => {
   const [comments, setComments] = useState('');
 
@@ -11,17 +14,15 @@ const CommentForm = ({ id, addComment }) => {
   };
 
   return (
-    <form onSubmit={handleComment}>
-      <div>
-        <input
-          name="comment"
-          value={comments}
-          type="text"
-          onChange={({ target }) => setComments(target.value)}
-        />
-        <button className="btn secondary">Add Comment</button>
-      </div>
-    </form>
+    <Form.Group onSubmit={handleComment}>
+      <Form.Control
+        name="comment"
+        value={comments}
+        type="text"
+        onChange={({ target }) => setComments(target.value)}
+      />
+      <Button className="btn secondary">Add Comment</Button>
+    </Form.Group>
   );
 };
 
