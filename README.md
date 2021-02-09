@@ -51,3 +51,10 @@ Course completion: ⏳ In Progress, part 5 completed...
 
 - [unicafe-redux](./part6/unicafe-redux)
 - [redux-anecdotes](./part6/redux-anecdotes)
+
+### Part 7: [React router, custom hooks, styling app with CSS and webpack](https://fullstackopen.com/en/part7)
+
+🔍 [View Exercise Solutions 7.1-7.21](./part7)
+
+- [Extend Bloglist (Frontend)](./part7/extend-bloglist/frontend)
+- [Extend Bloglist (Backend)](./part7/extend-bloglist/backend)
