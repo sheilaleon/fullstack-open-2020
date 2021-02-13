@@ -5,7 +5,6 @@ import {
   ApolloProvider,
   HttpLink,
   InMemoryCache,
-  gql,
 } from '@apollo/client';
 
 import App from './App';
@@ -15,20 +14,6 @@ const client = new ApolloClient({
   link: new HttpLink({
     uri: 'http://localhost:4000',
   }),
-});
-
-const query = gql`
-  query {
-    allAuthors {
-      name
-      born
-      bookCount
-    }
-  }
-`;
-
-client.query({ query }).then((response) => {
-  console.log(response.data);
 });
 
 ReactDOM.render(
