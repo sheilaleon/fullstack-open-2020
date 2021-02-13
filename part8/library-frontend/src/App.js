@@ -25,7 +25,7 @@ const QUERY = gql`
 const App = () => {
   const [page, setPage] = useState('authors');
 
-  const result = useQuery(QUERY);
+  const result = useQuery(QUERY, { pollInterval: 2000 });
   if (result.loading) {
     return <div>Loading...</div>;
   }
