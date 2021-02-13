@@ -1,35 +1,23 @@
 import React, { useState } from 'react';
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 
-const ADD_BOOK = gql`
-  mutation addBook(
-    $title: String!
-    $author: String!
-    $published: Int!
-    $genres: [String!]!
-  ) {
-    addBook(
-      title: $title
-      author: $author
-      published: $published
-      genres: $genres
-    ) {
-      title
-      author
-      published
-      genres
-    }
-  }
-`;
+import { ADD_BOOK, ALL_BOOKS } from '../queries';
 
 const NewBook = (props) => {
   const [title, setTitle] = useState('');
-  const [author, setAuhtor] = useState('');
+  const [author, setAuthor] = useState('');
   const [published, setPublished] = useState('');
   const [genre, setGenre] = useState('');
   const [genres, setGenres] = useState([]);
 
-  const [addBook] = useMutation(ADD_BOOK);
+  const { setError } = props;
+
+  const [addBook] = useMutation(ADD_BOOK, {
+    refetchQueries: [{ query: ALL_BOOKS }],
+    onError: (error) => {
+      setError(error.graphQLErrors[0].message);
+    },
+  });
 
   if (!props.show) {
     return null;
@@ -38,19 +26,21 @@ const NewBook = (props) => {
   const submit = async (event) => {
     event.preventDefault();
 
-    console.log('add book...');
-
     const parseIntPublished = parseInt(published);
 
-    addBook({
-      variables: { title, author, published: parseIntPublished, genres },
-    });
-
-    setTitle('');
-    setPublished('');
-    setAuhtor('');
-    setGenres([]);
-    setGenre('');
+    if (title === '' || published === '' || author === '' || genres === '') {
+      setError(`All fields are required!`);
+      return null;
+    } else {
+      addBook({
+        variables: { title, author, published: parseIntPublished, genres },
+      });
+      setTitle('');
+      setPublished('');
+      setAuthor('');
+      setGenres([]);
+      setGenre('');
+    }
   };
 
   const addGenre = () => {
@@ -60,6 +50,7 @@ const NewBook = (props) => {
 
   return (
     <div>
+      <h2>add book</h2>
       <form onSubmit={submit}>
         <div>
           title
@@ -72,7 +63,7 @@ const NewBook = (props) => {
           author
           <input
             value={author}
-            onChange={({ target }) => setAuhtor(target.value)}
+            onChange={({ target }) => setAuthor(target.value)}
           />
         </div>
         <div>
