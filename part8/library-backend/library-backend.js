@@ -139,26 +139,28 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    authorCount: () => authors.length,
-    bookCount: () => books.length,
-    allBooks: (root, args) => {
-      if (args.author && args.title) {
-        return books.filter(
-          (book) =>
-            book.author === args.author && book.genres.includes(args.genre),
-        );
-      } else if (args.author) {
-        return books.filter((book) => book.author === args.author);
-      } else if (args.title) {
-        return books.filter((book) => book.genres.includes(args.genre));
-      }
-      return books;
-    },
-    allAuthors: () => authors,
+    authorCount: () => Author.collection.countDocuments(),
+    bookCount: () => Book.collection.countDocuments(),
+    // allBooks: (root, args) => {
+    //   if (args.author && args.title) {
+    //     return books.filter(
+    //       (book) =>
+    //         book.author === args.author && book.genres.includes(args.genre),
+    //     );
+    //   } else if (args.author) {
+    //     return books.filter((book) => book.author === args.author);
+    //   } else if (args.title) {
+    //     return books.filter((book) => book.genres.includes(args.genre));
+    //   }
+    //   return books;
+    // },
+    allAuthors: () => Author.find({}),
   },
   Author: {
-    bookCount: (root) =>
-      books.filter((book) => book.author === root.name).length,
+    bookCount: async (root) => {
+      const author = await Author.findOne({ name: root.name }).select('_id');
+      return Book.find({ author: author._id }).countDocuments();
+    },
   },
   Mutation: {
     addBook: async (root, args) => {
@@ -183,17 +185,15 @@ const resolvers = {
       }
       return book;
     },
-    editAuthor: (root, args) => {
-      const author = authors.find((author) => author.name === args.name);
+    editAuthor: async (root, args) => {
+      const author = await Author.findOne({ name: args.name });
+
       if (!author) {
         return null;
       }
 
-      const updatedAuthor = { ...author, born: args.setBornTo };
-      authors = authors.map((author) =>
-        author.name === args.name ? updatedAuthor : author,
-      );
-      return updatedAuthor;
+      author.born = args.setBornTo;
+      return author.save();
     },
   },
 };
