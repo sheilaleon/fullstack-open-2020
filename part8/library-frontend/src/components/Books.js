@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 const Books = (props) => {
-  const [filter, setFilter] = useState();
+  const [filter, setFilter] = useState(null);
   const [genres, setGenres] = useState([]);
   const [filteredBooks, setFilteredBooks] = useState([]);
 
@@ -29,7 +29,7 @@ const Books = (props) => {
   return (
     <div>
       <h2>books</h2>
-      {filteredBooks !== null ? (
+      {filter !== null ? (
         <p>
           in genre: <strong>{filter}</strong>
         </p>
@@ -47,7 +47,7 @@ const Books = (props) => {
             {genre}
           </button>
         ))}
-        <button type="button" onClick={() => setFilter('')}>
+        <button type="button" onClick={() => setFilter(null)}>
           all genres
         </button>
         <br />
@@ -60,7 +60,7 @@ const Books = (props) => {
             <th>author</th>
             <th>published</th>
           </tr>
-          {filter !== ''
+          {filter !== null
             ? filteredBooks.map((a) => (
                 <tr key={a.id}>
                   <td>{a.title}</td>

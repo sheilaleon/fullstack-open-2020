@@ -7,7 +7,8 @@ import NewBook from './components/NewBook';
 import Notify from './components/Notify';
 import LoginForm from './components/LoginForm';
 
-import { ALL_BOOKS } from './queries';
+import { INIT } from './queries';
+import Recommendations from './components/Recommendations';
 
 const App = () => {
   const [page, setPage] = useState('authors');
@@ -30,7 +31,7 @@ const App = () => {
     }
   }, [token]);
 
-  const result = useQuery(ALL_BOOKS);
+  const result = useQuery(INIT);
   if (result.loading) {
     return <div>Loading...</div>;
   }
@@ -49,6 +50,7 @@ const App = () => {
         {token !== null ? (
           <>
             <button onClick={() => setPage('add')}>add book</button>
+            <button onClick={() => setPage('recommend')}>recommend</button>
             <button onClick={logout}>Logout</button>
           </>
         ) : (
@@ -68,6 +70,13 @@ const App = () => {
         setError={notify}
         setToken={setToken}
         setPage={setPage}
+      />
+
+      <Recommendations
+        show={page === 'recommend'}
+        setError={notify}
+        books={result.data.allBooks}
+        me={result.data.me}
       />
     </div>
   );
