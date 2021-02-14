@@ -8,11 +8,9 @@ const Authors = (props) => {
   const [born, setBorn] = useState('');
   const [updated, setUpdated] = useState(null);
 
-  const { setError } = props;
+  const { setError, token } = props;
 
   const result = useQuery(ALL_AUTHORS);
-
-  console.log('result :>> ', result);
 
   const [editAuthor] = useMutation(EDIT_AUTHOR, {
     refetchQueries: [{ query: ALL_AUTHORS }],
@@ -25,7 +23,7 @@ const Authors = (props) => {
     if (result.data) {
       setUpdated(true);
     }
-  }, [result.data, updated]);
+  }, [result.data]); // eslint-disable-line
 
   if (!props.show) {
     return null;
@@ -80,33 +78,37 @@ const Authors = (props) => {
           ))}
         </tbody>
       </table>
-      <h2>Set birthyear</h2>
-      <form onSubmit={submit}>
-        <div>
-          <label htmlFor="authors">name</label>
-          <select id="authors" name="authors" onChange={handleChange}>
-            <option value="">Select author</option>
-            {result.data.allAuthors.map((author) => (
-              <option key={author.id} value={author.name}>
-                {author.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label htmlFor="born">born</label>
-          <input
-            value={born}
-            id="born"
-            name="born"
-            type="number"
-            min="0"
-            max={getCurrentYear()}
-            onChange={({ target }) => setBorn(target.value)}
-          ></input>
-        </div>
-        <button type="submit">Update Author</button>
-      </form>
+      {token !== null ? (
+        <>
+          <h2>Set birthyear</h2>
+          <form onSubmit={submit}>
+            <div>
+              <label htmlFor="authors">name</label>
+              <select id="authors" name="authors" onChange={handleChange}>
+                <option value="">Select author</option>
+                {result.data.allAuthors.map((author) => (
+                  <option key={author.id} value={author.name}>
+                    {author.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label htmlFor="born">born</label>
+              <input
+                value={born}
+                id="born"
+                name="born"
+                type="number"
+                min="0"
+                max={getCurrentYear()}
+                onChange={({ target }) => setBorn(target.value)}
+              ></input>
+            </div>
+            <button type="submit">Update Author</button>
+          </form>
+        </>
+      ) : null}
     </div>
   );
 };
