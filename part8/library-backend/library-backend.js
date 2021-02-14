@@ -58,17 +58,12 @@ const resolvers = {
     authorCount: () => Author.collection.countDocuments(),
     bookCount: () => Book.collection.countDocuments(),
     allBooks: (root, args) => {
-      if (args.author && args.title) {
-        return books.filter(
-          (book) =>
-            book.author === args.author && book.genres.includes(args.genre),
-        );
-      } else if (args.author) {
-        return books.filter((book) => book.author === args.author);
+      if (args.genre) {
+        return Book.find({ genres: { $in: args.genre } }).populate('author');
       } else if (args.title) {
-        return books.filter((book) => book.genres.includes(args.genre));
+        return Book.find({ title: args.title }).populate('author');
       }
-      return books;
+      return Book.find({}).populate('author');
     },
     allAuthors: () => Author.find({}),
   },
