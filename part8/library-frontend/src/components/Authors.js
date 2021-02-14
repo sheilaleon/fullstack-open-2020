@@ -12,6 +12,8 @@ const Authors = (props) => {
 
   const result = useQuery(ALL_AUTHORS);
 
+  console.log('result :>> ', result);
+
   const [editAuthor] = useMutation(EDIT_AUTHOR, {
     refetchQueries: [{ query: ALL_AUTHORS }],
     onError: (error) => {
