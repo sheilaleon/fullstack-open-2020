@@ -29,11 +29,11 @@ const Books = (props) => {
   return (
     <div>
       <h2>books</h2>
-      {filter !== null ? (
+      {filter && (
         <p>
           in genre: <strong>{filter}</strong>
         </p>
-      ) : null}
+      )}
 
       <h3>Filter by:</h3>
       <div>
