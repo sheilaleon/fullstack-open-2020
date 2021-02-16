@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-// import { useQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
 
 // import { ME } from '../queries';
 
 const Recommendations = (props) => {
   const [favouriteBooks, setFavouriteBooks] = useState([]);
+  const [getBooks, { loading, data}] = useLazyQuery()
   const { books, me } = props;
 
   useEffect(() => {
@@ -14,7 +15,6 @@ const Recommendations = (props) => {
     setFavouriteBooks(filteredBooks);
   }, []); // eslint-disable-line
 
-  console.log('favouriteBooks :>> ', favouriteBooks);
   if (!props.show) {
     return null;
   }
@@ -23,16 +23,19 @@ const Recommendations = (props) => {
     <div>
       <h2>recommendations</h2>
       <p>
-        books in your favourite genre <strong>{me.favouriteGenre}</strong>
+        showing books in your favourite genre:{' '}
+        <strong>{me.favouriteGenre}</strong>
       </p>
 
       <table>
         <tbody>
-          <tr>
-            <th></th>
-            <th>author</th>
-            <th>published</th>
-          </tr>
+          {favouriteBooks.length > 0 && (
+            <tr>
+              <th></th>
+              <th>author</th>
+              <th>published</th>
+            </tr>
+          )}
           {favouriteBooks.length > 0 ? (
             favouriteBooks.map((a) => (
               <tr key={a.id}>
