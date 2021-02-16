@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useQuery, useApolloClient } from '@apollo/client';
+import {
+  useQuery,
+  useMutation,
+  useSubscription,
+  useApolloClient,
+} from '@apollo/client';
 
 import Authors from './components/Authors';
 import Books from './components/Books';
@@ -7,7 +12,7 @@ import NewBook from './components/NewBook';
 import Notify from './components/Notify';
 import LoginForm from './components/LoginForm';
 
-import { INIT } from './queries';
+import { BOOK_ADDED, INIT } from './queries';
 import Recommendations from './components/Recommendations';
 
 const App = () => {
@@ -16,6 +21,14 @@ const App = () => {
   const [token, setToken] = useState(null);
 
   const client = useApolloClient();
+
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      alert(
+        `A new book "${subscriptionData.data.bookAdded.title}" has been added to the library!`,
+      );
+    },
+  });
 
   const notify = (message) => {
     setErrorMessage(message);
