@@ -1,3 +1,22 @@
+interface BmiProps {
+  height: number;
+  weight: number;
+}
+
+const parseArguments = (args: Array<string>): BmiProps => {
+  if (args.length < 4) throw new Error('Not enough arguments')
+  if (args.length > 4) throw new Error ('Too many arguments')
+
+  if(!isNaN(Number(args[2])) && !isNaN(Number(args[3]))) {
+    return {
+      height: Number(args[2]),
+      weight: Number(args[3])
+    }
+  } else {
+    throw new Error('Values given are not numbers!')
+  }
+}
+
 const calculateBmi = (height: number, weight: number) => {
   const bmi = weight / Math.pow((height / 100), 2);
   if (bmi > 40) {
@@ -21,7 +40,10 @@ const calculateBmi = (height: number, weight: number) => {
 };
 
 try {
-  console.log(calculateBmi(180, 74));
+  const { height, weight } = parseArguments(process.argv)
+  console.log(calculateBmi(height, weight));
 } catch (e) {
   console.log('Something went wrong, try again. Use CM for height and KG for weight.')
 }
+
+// console.log(process.argv)
