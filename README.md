@@ -58,3 +58,10 @@ Course completion: ⏳ In Progress, part 5 completed...
 
 - [Extend Bloglist (Frontend)](./part7/extend-bloglist/frontend)
 - [Extend Bloglist (Backend)](./part7/extend-bloglist/backend)
+
+### Part 8: [GraphQL](https://fullstackopen.com/en/part8)
+
+🔍 [View Exercise Solutions 8.1-8.26](./part8)
+
+- [Library - Frontend](./part8/library-frontend)
+- [Library - Backend](./part8/library-backend)
