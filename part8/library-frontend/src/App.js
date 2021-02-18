@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  useQuery,
-  useMutation,
-  useSubscription,
-  useApolloClient,
-} from '@apollo/client';
+import { useQuery, useSubscription, useApolloClient } from '@apollo/client';
 
 import Authors from './components/Authors';
 import Books from './components/Books';
