@@ -35,7 +35,7 @@ const parseArgs = (args: Array<string>): ExerciseProps => {
   }
 };
 
-const calculateExercise = (dailyTarget: number, weeklyTraining: number[], ) : ExerciseResults => {
+export const calculateExercise = (dailyTarget: number, weeklyTraining: number[], ) : ExerciseResults => {
 
   const periodLength = weeklyTraining.length;
   const trainingDays = weeklyTraining.filter((trained) => trained > 0).length;
