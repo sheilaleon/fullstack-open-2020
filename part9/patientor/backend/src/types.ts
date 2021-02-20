@@ -4,4 +4,14 @@ export interface Diagnosis {
   latin?: string;
 }
 
-export type DiagnosisLatinFree = Omit<Diagnosis, 'latin'>;
+
+export interface Patients {
+  id: string;
+  name: string;
+  dateOfBirth: string;
+  ssn?: string;
+  gender: string;
+  occupation: string;
+}
+
+export type PatientsPII = Omit<Patients, 'ssn'>;
