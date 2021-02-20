@@ -8,35 +8,45 @@ interface ExerciseResults {
   average: number,
 }
 
-// interface ExerciseProps {
-//   weeklyTraining: number[],
-//   dailyTarget: number
-// }
+interface ExerciseProps {
+  dailyTarget: number
+  weeklyTraining: any,
+}
 
-// const parseArgs = (args: Array<string>): ExerciseProps => {
-//   if (args.length < 4) throw new Error('Not enough arguments');
-//   if (args.length > 4) throw new Error('Too many arguments');
+const parseArgs = (args: Array<string>): ExerciseProps => {
+  if (args.length < 4) throw new Error('Not enough arguments');
 
-//   const weeklyTraining = Number(args[2])
-//   const dailyTarget = Number(args[3])
 
-//   return {
-//     weeklyTraining,
-//     dailyTarget,
-//   }
-// };
+  function getTrainingHours(providedValues: string[]) {
+    if (providedValues.some((value) => isNaN(Number(value)))) {
+      throw new Error('Inputs are not a number, try again.');
+    }
 
-const calculateExercise = (weeklyTraining: number[], dailyTarget: number) : ExerciseResults => {
+    return providedValues.map((value) => Number(value));
+  }
+    
+  const dailyTarget = Number(args[2]);
+  const providedValues = args.slice(3);
+  const weeklyTraining = getTrainingHours(providedValues);
+
+  return {
+    dailyTarget,
+    weeklyTraining,
+  }
+};
+
+const calculateExercise = (dailyTarget: number, weeklyTraining: number[], ) : ExerciseResults => {
 
   const periodLength = weeklyTraining.length;
-  const trainingDays = weeklyTraining.filter((trained) => trained > 0).length
+  const trainingDays = weeklyTraining.filter((trained) => trained > 0).length;
 
   let success: boolean = false;
   
   let rating: number = 1;
   let ratingDescription: string = 'Better luck next time.';
   
-  const average: number =  weeklyTraining.reduce((acc, cv) => acc + cv, 0) / weeklyTraining.length
+  const average: number =
+    weeklyTraining.reduce((acc, cv) => acc + cv, 0) / weeklyTraining.length;
   
   if (average >= dailyTarget) {
     rating = 3;
@@ -45,7 +55,7 @@ const calculateExercise = (weeklyTraining: number[], dailyTarget: number) : Exer
   } else if (average < dailyTarget && average > 0) {
     rating = 2;
     ratingDescription = 'Not too bad, could be better'
-  } 
+  };
 
   return {
     periodLength: periodLength,
@@ -56,6 +66,11 @@ const calculateExercise = (weeklyTraining: number[], dailyTarget: number) : Exer
     target: dailyTarget,
     average: average,
   };
-}
+};
 
-console.log(calculateExercise([3, 0, 2, 4.5, 0, 3, 1], 2));
+try {
+  const { dailyTarget, weeklyTraining } = parseArgs(process.argv);
+  console.log(calculateExercise(dailyTarget, weeklyTraining));
+} catch (error) {
+  console.log(`Something went wrong --- ${error}`);
+}

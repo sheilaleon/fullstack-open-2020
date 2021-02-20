@@ -43,7 +43,5 @@ try {
   const { height, weight } = parseArguments(process.argv)
   console.log(calculateBmi(height, weight));
 } catch (e) {
-  console.log('Something went wrong, try again. Use CM for height and KG for weight.')
+  console.log(`Something went wrong, try again. Use CM for height and KG for weight. ${e}`)
 }
-
-// console.log(process.argv)
