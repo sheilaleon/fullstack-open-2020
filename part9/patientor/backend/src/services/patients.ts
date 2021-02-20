@@ -1,21 +1,33 @@
+import { v4 as uuidv4 } from 'uuid';
+
 import patients from '../../data/patients.json';
-import { Patients ,PatientsPII } from '../types';
+import { Patients, MaskedPatients, NewPatient } from '../types';
 
 const getPatients = (): Patients[] => {
   return patients;
 };
 
-const getPatientsPII = (): PatientsPII[] => {
+const getMaskedPatients = (): MaskedPatients[] => {
   return patients.map(({ id, name, dateOfBirth, gender, occupation }) => ({
     id,
     name,
     dateOfBirth,
     gender,
-    occupation
+    occupation,
   }));
+};
+
+const addPatient = (patient: NewPatient): Patients => {
+  const newPatient = {
+    id: uuidv4(),
+    ...patient,
+  };
+  patients.push(newPatient);
+  return newPatient;
 };
 
 export default {
   getPatients,
-  getPatientsPII,
+  getMaskedPatients,
+  addPatient,
 };
