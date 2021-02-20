@@ -10,7 +10,7 @@ interface ExerciseResults {
 
 interface ExerciseProps {
   dailyTarget: number
-  weeklyTraining: any,
+  weeklyTraining: number[],
 }
 
 const parseArgs = (args: Array<string>): ExerciseProps => {
@@ -32,7 +32,7 @@ const parseArgs = (args: Array<string>): ExerciseProps => {
   return {
     dailyTarget,
     weeklyTraining,
-  }
+  };
 };
 
 export const calculateExercise = (dailyTarget: number, weeklyTraining: number[], ) : ExerciseResults => {
@@ -40,10 +40,10 @@ export const calculateExercise = (dailyTarget: number, weeklyTraining: number[],
   const periodLength = weeklyTraining.length;
   const trainingDays = weeklyTraining.filter((trained) => trained > 0).length;
 
-  let success: boolean = false;
+  let success = false;
   
-  let rating: number = 1;
-  let ratingDescription: string = 'Better luck next time.';
+  let rating = 1;
+  let ratingDescription = 'Better luck next time.';
   
   const average: number =
     weeklyTraining.reduce((acc, cv) => acc + cv, 0) / weeklyTraining.length;
@@ -51,11 +51,11 @@ export const calculateExercise = (dailyTarget: number, weeklyTraining: number[],
   if (average >= dailyTarget) {
     rating = 3;
     success = true;
-    ratingDescription = 'Success~!'
+    ratingDescription = 'Success~!';
   } else if (average < dailyTarget && average > 0) {
     rating = 2;
-    ratingDescription = 'Not too bad, could be better'
-  };
+    ratingDescription = 'Not too bad, could be better';
+  }
 
   return {
     periodLength: periodLength,
@@ -72,5 +72,5 @@ try {
   const { dailyTarget, weeklyTraining } = parseArgs(process.argv);
   console.log(calculateExercise(dailyTarget, weeklyTraining));
 } catch (error) {
-  console.log(`Something went wrong --- ${error}`);
+  console.log(`Something went wrong ---`, error);
 }

@@ -1,4 +1,6 @@
-export const calculateBmi = (height: number, weight: number) => {
+type CalculateBmiResults = string;
+
+export const calculateBmi = (height: number, weight: number): CalculateBmiResults => {
   const bmi = weight / Math.pow(height / 100, 2);
   if (bmi > 40) {
     return 'Very severely obese';
