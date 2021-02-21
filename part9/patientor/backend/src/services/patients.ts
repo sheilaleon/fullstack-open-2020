@@ -1,13 +1,19 @@
 import { v4 as uuidv4 } from 'uuid';
 
 import patients from '../../data/patients.json';
-import { Patients, MaskedPatients, NewPatient } from '../types';
+import { Patients, PublicPatient, NewPatient } from '../types';
 
-const getPatients = (): Patients[] => {
-  return patients;
+const savedPatients = [...patients];
+
+const findById = (id: string): Patients | unknown => {
+  const patient = savedPatients.find((patient) => patient.id === id);
+  return {
+    ...patient,
+    entries: [],
+  };
 };
 
-const getMaskedPatients = (): MaskedPatients[] => {
+const getPatients = (): PublicPatient[] => {
   return patients.map(({ id, name, dateOfBirth, gender, occupation }) => ({
     id,
     name,
@@ -28,6 +34,6 @@ const addPatient = (patient: NewPatient): Patients => {
 
 export default {
   getPatients,
-  getMaskedPatients,
   addPatient,
+  findById,
 };
