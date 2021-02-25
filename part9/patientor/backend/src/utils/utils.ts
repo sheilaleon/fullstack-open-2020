@@ -1,8 +1,14 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { Gender, MaskedPatients, NewPatient, Patients } from '../types';
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/restrict-plus-operands, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call */
+
+import {
+  BaseEntry,
+  Diagnosis,
+  Entry,
+  Gender,
+  MaskedPatients,
+  NewPatient,
+  Patients,
+} from '../types';
 
 export const maskedPatient = ({
   id,
@@ -10,8 +16,9 @@ export const maskedPatient = ({
   dateOfBirth,
   gender,
   occupation,
+  entries,
 }: Patients): MaskedPatients => {
-  return { id, name, dateOfBirth, gender, occupation };
+  return { id, name, dateOfBirth, gender, occupation, entries };
 };
 
 const isString = (text: any): text is string => {
@@ -32,7 +39,7 @@ const isDate = (date: string): boolean => {
 
 const parseDate = (date: any): string => {
   if (!date || !isString(date) || !isDate(date)) {
-    throw new Error(`Incorrect (YYYY-MM-DD) or missing date: ${date}`);
+    throw new Error(`Incorrect (YYYY-MM-DD) or missing date`);
   }
   return date;
 };
@@ -50,6 +57,44 @@ const parseGender = (gender: any): Gender => {
   return gender;
 };
 
+const isBaseEntry = (entry: any): entry is BaseEntry => {
+  if (!entry) {
+    throw new Error(`No entry`);
+  }
+
+  if (entry.diagnosisCodes && !parseDiagnosis(entry.diagnosisCodes)) {
+    throw new Error(`Incorrect Diagnosis Code`);
+  }
+
+  if (
+    !isString(entry.id) ||
+    !isString(entry.description) ||
+    !isString(entry.data) ||
+    !isString(entry.specialist)
+  ) {
+    throw new Error(
+      `Incorrect entry for: id, description, date and/or specialist.`,
+    );
+  }
+  return entry;
+};
+
+const parseEntry = (entries: any): Entry[] => {
+  if (!entries) {
+    throw new Error('Entry(s) missing');
+  }
+  return entries.map((entry: any) => {
+    if (!isBaseEntry(entry)) {
+      throw new Error(`No Base Entry found`);
+    }
+    return entry;
+  });
+};
+
+const parseDiagnosis = (diagnosisCodes: any): Array<Diagnosis['code']> => {
+  return diagnosisCodes.every((diagnosisCode: any) => isString(diagnosisCode));
+};
+
 export const toNewPatient = (object: any): NewPatient => {
   return {
     name: parseString('name', object.name),
@@ -57,5 +102,6 @@ export const toNewPatient = (object: any): NewPatient => {
     ssn: parseString('ssn', object.ssn),
     gender: parseGender(object.gender),
     occupation: parseString('occupation', object.occupation),
+    entries: parseEntry(object.entries),
   };
 };
