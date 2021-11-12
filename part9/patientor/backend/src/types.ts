@@ -1,7 +1,22 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export enum Gender {
+  Male = 'male',
+  Female = 'female',
+  Other = 'other',
+}
+
 export interface Diagnosis {
   code: string;
   name: string;
   latin?: string;
+}
+
+export interface BaseEntry {
+  id: string;
+  description: string;
+  date: string;
+  specialist: string;
+  diagnosisCodes?: Array<Diagnosis['code']>;
 }
 
 export enum HealthCheckRating {
@@ -11,58 +26,52 @@ export enum HealthCheckRating {
   'CriticalRisk' = 3,
 }
 
-export interface BaseEntry {
-  id: string;
-  description: string;
+export interface SickLeave {
+  startDate: string;
+  endDate: string;
+}
+
+export interface Discharge {
   date: string;
-  specialist: string;
-  diagnosisCodes?: Array<Diagnosis['code']>; // Easier to read version of Diagnosis['code'][]
+  criteria: string;
 }
 
-interface HospitalEntry extends BaseEntry {
-  type: 'Hospital';
-  discharge?: {
-    date: string;
-    criteria: string;
-  };
-}
-
-interface OccupationalHealthcareEntry extends BaseEntry {
-  type: 'OccupationalHealthcare';
-  employerName: string;
-  sickLeave?: {
-    startDate: string;
-    endDate: string;
-  };
-}
-
-interface HealthCheckEntry extends BaseEntry {
+export interface HealthCheckEntry extends BaseEntry {
   type: 'HealthCheck';
   healthCheckRating: HealthCheckRating;
 }
 
-export type Entry =
-  | HospitalEntry
-  | OccupationalHealthcareEntry
-  | HealthCheckEntry;
+export interface OccupationalHealthCareEntry extends BaseEntry {
+  type: 'OccupationalHealthcare';
+  employerName: string;
+  sickLeave?: SickLeave;
+}
 
-export interface Patients {
+export interface HospitalEntry extends BaseEntry {
+  type: 'Hospital';
+  discharge: Discharge;
+}
+
+export type Entry =
+  | HealthCheckEntry
+  | OccupationalHealthCareEntry
+  | HospitalEntry;
+
+export type NewEntry =
+  | Omit<HospitalEntry, 'id'>
+  | Omit<OccupationalHealthCareEntry, 'id'>
+  | Omit<HealthCheckEntry, 'id'>;
+
+export interface Patient {
   id: string;
   name: string;
-  dateOfBirth: string;
   ssn: string;
-  gender: string;
   occupation: string;
+  gender: Gender;
+  dateOfBirth: string;
   entries: Entry[];
 }
 
-export type MaskedPatients = Omit<Patients, 'ssn'>;
-export type PublicPatient = Omit<Patients, 'ssn' | 'entries'>;
+export type NewPatient = Omit<Patient, 'id'>;
 
-export type NewPatient = Omit<Patients, 'id'>;
-
-export enum Gender {
-  Male = 'male',
-  Female = 'female',
-  Other = 'other',
-}
+export type PublicPatient = Omit<Patient, 'ssn' | 'entries'>;

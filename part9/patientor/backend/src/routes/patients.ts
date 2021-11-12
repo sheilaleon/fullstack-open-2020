@@ -1,7 +1,7 @@
 import express from 'express';
 
 import patientsService from '../services/patients';
-import { toNewPatient } from '../utils/utils';
+import toNewPatient, { toNewEntry } from '../utils/utils';
 
 const router = express.Router();
 
@@ -30,6 +30,26 @@ router.post('/', (req, res) => {
     const errorMessage =
       error instanceof Error ? error.message : 'Undefined error';
     res.status(400).send(errorMessage);
+  }
+});
+
+router.post('/:id/entries', (req, res) => {
+  const patient = patientsService.findById(String(req.params.id));
+
+  if (patient) {
+    try {
+      const newEntry = toNewEntry(req.body);
+      if (patient && newEntry) {
+        const updatedPatient = patientsService.addEntry(patient, newEntry);
+        res.json(updatedPatient);
+      }
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Undefined error';
+      res.status(400).send(errorMessage);
+    }
+  } else {
+    res.status(404).send({ error: 'Sorry, this patient does not exist' });
   }
 });
 

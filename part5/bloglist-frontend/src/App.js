@@ -27,7 +27,7 @@ const App = () => {
   }
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
+    blogService.getAll().then(blogs => setBlogs(blogs));
   }, []);
 
   // * Set User's token if logged in
@@ -42,7 +42,7 @@ const App = () => {
 
   const blogFormRef = useRef();
 
-  const handleLogin = async (e) => {
+  const handleLogin = async e => {
     e.preventDefault();
 
     try {
@@ -64,25 +64,25 @@ const App = () => {
     }
   };
 
-  const handleLogout = (e) => {
+  const handleLogout = e => {
     e.preventDefault();
     window.localStorage.removeItem('user');
     setUser(null);
   };
 
-  const createBlog = (blogObject) => {
+  const createBlog = blogObject => {
     blogService
       .create(blogObject)
-      .then((returnedBlog) => {
+      .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog));
         blogFormRef.current.toggleVisibility();
         setNotification(
-          `A new blog "${blogObject.title}" by ${blogObject.author} has been added.`,
+          `A new blog "${blogObject.title}" by ${blogObject.author} has been added.`
         );
         setNotificationState('success');
         displayNotification();
       })
-      .catch((error) => {
+      .catch(error => {
         setNotification(`${error.response.data.error}`);
         setNotificationState('error');
         displayNotification();
@@ -90,22 +90,23 @@ const App = () => {
   };
 
   const likeBlog = (id, blogObject) => {
-    blogService.update(id, blogObject).then((returnedBlog) => {
-      setBlogs(blogs.map((blog) => (blog.id !== id ? blog : returnedBlog)));
+    blogService.update(id, blogObject).then(returnedBlog => {
+      setBlogs(blogs.map(blog => (blog.id !== id ? blog : returnedBlog)));
     });
   };
   const blogsSortedByLikes = blogs.sort(function (a, b) {
     return b.likes - a.likes;
   });
-
-  const removeBlog = (id) => {
-    blogService.remove(id).then((returnedBlog) => {
-      setBlogs(blogs.filter((blog) => blog.id !== id));
+  console.log('blogs :>> ', blogs);
+  console.log('blogSortedByLikes', blogsSortedByLikes);
+  const removeBlog = id => {
+    blogService.remove(id).then(returnedBlog => {
+      setBlogs(blogs.filter(blog => blog.id !== id));
     });
   };
 
   return (
-    <div className="container">
+    <div className='container'>
       <h1>{user === null ? `Login` : `Blogs`}</h1>
       <Notification
         notification={notification}
@@ -121,9 +122,9 @@ const App = () => {
         />
       ) : (
         <>
-          <div className="user-actions">
+          <div className='user-actions'>
             <p>{user.name} logged in.</p>
-            <button className="btn-sm secondary" onClick={handleLogout}>
+            <button className='btn-sm secondary' onClick={handleLogout}>
               Log out
             </button>
           </div>
@@ -131,7 +132,7 @@ const App = () => {
             <BlogForm createBlog={createBlog} />
           </Toggle>
           <ul>
-            {blogsSortedByLikes.map((blog) => (
+            {blogsSortedByLikes.map(blog => (
               <BlogItem
                 key={blog.id}
                 blog={blog}
